@@ -17,6 +17,9 @@ public class Item {
 	private int leather;
 	private String artifact;
 	
+	private String gradeType;
+	private int gradesToEnchant;
+	
 	private int actualPrice;
 	
 }
