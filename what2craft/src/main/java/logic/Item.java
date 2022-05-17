@@ -3,6 +3,7 @@ package logic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -22,11 +23,12 @@ public class Item {
 	
 	private String requestName;
 	
-	private Recipe recipe;
+//	private Recipe recipe;
 	private String artifact;
 	
-	@OneToOne(targetEntity = PricesRecord.class, fetch = FetchType.EAGER)
-	private PricesRecord prices;
+//	@OneToOne(targetEntity = PricesRecord.class, fetch = FetchType.EAGER)
+//	@JoinColumn(nullable = false, name = "prices_id")
+//	private PricesRecord prices;
 	
 	private String gradeType;
 //	private int gradesToEnchant;
@@ -53,16 +55,14 @@ public class Item {
 		}
 		
 		String[] idParts = cutEnchantment[0].split("_");
-		System.out.println(idParts[0].substring(1));
 		resulting.tier = Integer.parseInt(idParts[0].substring(1));
 		if(idParts.length > 3) {
-			System.out.println(idParts[3].toLowerCase());
 			resulting.gradeType = idParts[3].toLowerCase();
 		}
 				
 		resulting.humanName = parts[2].substring(1);
 		
-		return null;
+		return resulting;
 	}
 
 	public int getQuality() {
@@ -81,12 +81,12 @@ public class Item {
 		this.quality = quality;
 	}
 	
-	public Recipe getRecipe() {
-		return recipe;
-	}
-	
-	public int getGradesToChant() {
-		return recipe.totalMaterials() * 6;
-	}
+//	public Recipe getRecipe() {
+//		return recipe;
+//	}
+//	
+//	public int getGradesToChant() {
+//		return recipe.totalMaterials() * 6;
+//	}
 	
 }

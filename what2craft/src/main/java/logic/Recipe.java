@@ -17,7 +17,9 @@ public class Recipe {
 	private int ingots;
 	private int leather;
 	
-	
+	public Recipe() {
+		
+	}
 	
 	public int totalMaterials() {
 		return planks + cloth + ingots + leather;

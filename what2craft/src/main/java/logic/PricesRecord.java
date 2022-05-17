@@ -25,6 +25,10 @@ public class PricesRecord {
 	private int bridgewatch;
 	private int caerleon;
 	
+	public PricesRecord() {
+		
+	}
+	
 	public int priceIn(String city) throws UnknownCityException {
 		if(city == "lymhurst")
 			return lymhurst;
