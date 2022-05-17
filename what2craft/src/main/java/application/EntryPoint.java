@@ -1,13 +1,29 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.web.client.RestClientException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,37 +31,38 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import albionDataCommunication.DataFetcher;
 import albionDataCommunication.PriceResponse;
+import database.ItemService;
 import logic.Item;
 
+@EnableJpaRepositories({"database"})
+@ComponentScan({"database"})
+@EntityScan({"logic"})
 @Configuration
+@SpringBootApplication
 public class EntryPoint {
 	
 	@Autowired
-	DataFetcher dataFetcher;
+	@Lazy
+	ItemService itemService;
 	
 	@Bean
 	public DataFetcher dataFetcher() {
 		return new DataFetcher();
 	}
+	
+	@Bean
+	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+		return args -> {
+
+			itemService.setupAmmunitionBase();
+
+		};
+	}
 
 	public static void main(String[] args) throws JsonMappingException, JsonProcessingException, RestClientException {
+			
+		SpringApplication.run(EntryPoint.class, args);
 		
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(EntryPoint.class);
-		
-		EntryPoint app = context.getBean(EntryPoint.class);
-		app.startUp();
-		
-	}
-	
-	public void startUp() throws JsonMappingException, JsonProcessingException, RestClientException {
-		
-		Item item = new Item();
-		item.setRequestName("T5_BAG");
-		item.setQuality(1);
-		
-		
-		PriceResponse[] responseForm = dataFetcher.fetchActualData(item, "Bridgewatch");
-		System.out.println(responseForm[0]);
 	}
 
 }
