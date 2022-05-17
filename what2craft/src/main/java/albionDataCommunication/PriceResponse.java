@@ -1,19 +1,32 @@
 package albionDataCommunication;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import logic.Item;
 
 public class PriceResponse {
 
-	private String itemId;					// snake case because I want the fields to better represent given Json to improve readability to anyone in the future
+	@JsonProperty("item_id")
+	private String itemId;
+	@JsonProperty("city")
 	private String city;
+	@JsonProperty("quality")
 	private int quality;
+	@JsonProperty("sell_price_min")
 	private int sellPriceMin;
+	@JsonProperty("sell_price_min_date")
 	private String sellPriceMinDate;
+	@JsonProperty("sell_price_max")
 	private int sellPriceMax;
+	@JsonProperty("sell_price_max_date")
 	private String sellPriceMaxDate;
+	@JsonProperty("buy_price_min")
 	private int buyPriceMin;
+	@JsonProperty("buy_price_min_date")
 	private String buyPriceMinDate;
+	@JsonProperty("buy_price_max")
 	private int buyPriceMax;
+	@JsonProperty("buy_price_max_date")
 	private String buyPriceMaxDate;
 	
 	
@@ -41,8 +54,8 @@ public class PriceResponse {
 		return itemId + " in " + city + " for " + sellPriceMin;
 	}
 
-	public void setItem_id(String item_id) {
-		this.itemId = item_id;
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
 	}
 
 	public void setCity(String city) {
@@ -53,35 +66,35 @@ public class PriceResponse {
 		this.quality = quality;
 	}
 
-	public void setSell_price_min(int sell_price_min) {
-		this.sellPriceMin = sell_price_min;
+	public void setSellPriceMin(int sellPriceMin) {
+		this.sellPriceMin = sellPriceMin;
 	}
 
-	public void setSell_price_min_date(String sell_price_min_date) {
-		this.sellPriceMinDate = sell_price_min_date;
+	public void setSellPriceMinDate(String sellPriceMinDate) {
+		this.sellPriceMinDate = sellPriceMinDate;
 	}
 
-	public void setSell_price_max(int sell_price_max) {
-		this.buyPriceMax = sell_price_max;
+	public void setSellPriceMax(int sellPriceMax) {
+		this.buyPriceMax = sellPriceMax;
 	}
 
-	public void setSell_price_max_date(String sell_price_max_date) {
-		this.buyPriceMaxDate = sell_price_max_date;
+	public void setSellPriceMaxDate(String sellPriceMaxDate) {
+		this.buyPriceMaxDate = sellPriceMaxDate;
 	}
 
-	public void setBuy_price_min(int buy_price_min) {
-		this.buyPriceMin = buy_price_min;
+	public void setBuyPriceMin(int buyPriceMin) {
+		this.buyPriceMin = buyPriceMin;
 	}
 
-	public void setBuy_price_min_date(String buy_price_min_date) {
-		this.buyPriceMinDate = buy_price_min_date;
+	public void setBuyPriceMinDate(String buyPriceMinDate) {
+		this.buyPriceMinDate = buyPriceMinDate;
 	}
 
-	public void setBuy_price_max(int buy_price_max) {
-		this.buyPriceMax = buy_price_max;
+	public void setBuyPriceMax(int buyPriceMax) {
+		this.buyPriceMax = buyPriceMax;
 	}
 
-	public void setBuy_price_max_date(String buy_price_max_date) {
-		this.buyPriceMaxDate = buy_price_max_date;
+	public void setBuyPriceMaxDate(String buyPriceMaxDate) {
+		this.buyPriceMaxDate = buyPriceMaxDate;
 	}
 }

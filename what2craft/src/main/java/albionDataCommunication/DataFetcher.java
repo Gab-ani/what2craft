@@ -24,15 +24,12 @@ public class DataFetcher {
 	}
 	
 	public PriceResponse[] fetchActualData(Item item, String city) throws JsonMappingException, JsonProcessingException, RestClientException {
-		
 		RestTemplate restTemplate = new RestTemplate();
 		
 		ResponseEntity<PriceResponse[]> response = restTemplate.getForEntity(buildURL(item.getQuality(), item.getRequestName(), city), PriceResponse[].class);
 		PriceResponse[] prices = response.getBody();
 		
-		
 		return prices;
-		
 	}
 	
 	

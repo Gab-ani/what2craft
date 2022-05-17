@@ -39,13 +39,16 @@ public class EntryPoint {
 	
 	public void startUp() throws JsonMappingException, JsonProcessingException, RestClientException {
 		
-		Item item = new Item();
-		item.setRequestName("T5_BAG");
-		item.setQuality(1);
+//		Item item = new Item();
+//		item.setRequestName("T5_BAG");
+//		item.setQuality(1);
+//		
+//		
+//		PriceResponse[] responseForm = dataFetcher.fetchActualData(item, "Bridgewatch");
+//		System.out.println(responseForm[0]);
 		
-		
-		PriceResponse[] responseForm = dataFetcher.fetchActualData(item, "Bridgewatch");
-		System.out.println(responseForm[0]);
+		String data = "4772: T7_2H_BOW_HELL@1                                                 : Grandmaster's Wailing Bow";
+		Item.parseFromFormattedString(data);
 	}
 
 }
