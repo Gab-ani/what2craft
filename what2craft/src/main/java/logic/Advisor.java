@@ -12,6 +12,13 @@ public class Advisor {
 	ItemService itemService;
 	
 	
+	public int byStraightCraft() {
+		
+	}
+	
+	public int byEnchanting() {
+		
+	}
 	
 	public int craftPrice(Item item) {
 		
