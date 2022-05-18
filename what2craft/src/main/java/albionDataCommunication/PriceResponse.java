@@ -2,7 +2,7 @@ package albionDataCommunication;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import logic.Item;
+import logic.ItemBasic;
 
 public class PriceResponse {
 

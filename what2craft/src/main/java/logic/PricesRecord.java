@@ -14,9 +14,9 @@ public class PricesRecord {
 	@Id
 	private int id;
 	
-	@OneToOne(targetEntity = Item.class, fetch = FetchType.EAGER)
+	@OneToOne(targetEntity = ItemBasic.class, fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false, name = "item_id")
-	private Item item;
+	private ItemBasic item;
 	
 	private int lymhurst;
 	private int sterling;

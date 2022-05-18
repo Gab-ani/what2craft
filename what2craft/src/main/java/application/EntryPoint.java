@@ -32,7 +32,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import albionDataCommunication.DataFetcher;
 import albionDataCommunication.PriceResponse;
 import database.ItemService;
-import logic.Item;
+import logic.ItemBasic;
 
 @EnableJpaRepositories({"database"})
 @ComponentScan({"database"})
@@ -53,9 +53,8 @@ public class EntryPoint {
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
-
-			itemService.setupAmmunitionBase();
-
+			
+			// wrath rampant? hand of khor diary? 
 		};
 	}
 
