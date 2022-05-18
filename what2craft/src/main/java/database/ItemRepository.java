@@ -9,7 +9,9 @@ import logic.ItemBasic;
 
 public interface ItemRepository extends JpaRepository<ItemBasic, Integer>{
 
-	@Query(value = "UPDATE items SET craft_node = :node WHERE human_name = :where", nativeQuery = true)
-	public void setCraftNode(@Param("where") String where, @Param("node") String craftnode);
+//	@Query(value = "UPDATE items SET craft_node = :node WHERE human_name = :where", nativeQuery = true)
+//	public void setCraftNode(@Param("where") String where, @Param("node") String craftnode);
+	
+	public ItemBasic findByHumanName(String name);
 	
 }

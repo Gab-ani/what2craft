@@ -54,6 +54,9 @@ public class EntryPoint {
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 			
+			ItemBasic item = itemService.getByName("Claymore");
+			
+			System.out.println(dataFetcher().fetchActualData(item, 5, 1, 1, "Lymhurst")[0]);
 			// wrath rampant? hand of khor diary? 
 		};
 	}

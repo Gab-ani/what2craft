@@ -39,14 +39,8 @@ public class ItemService {
 //		}
 //	}
 	
-	public void setCraftNode(String[] where, String node) {
-		for(String name : where) {
-			try {
-				itemDAO.setCraftNode(name, node);
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
+	public ItemBasic getByName(String name) {
+		return itemDAO.findByHumanName(name);
 	}
 
 	public void setUpDatabase() {					// call once and forget, kind of hardcoding - not deleting for possible forks				
