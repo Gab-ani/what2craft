@@ -8,6 +8,7 @@ import java.util.Scanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import logic.Artifact;
 import logic.ItemBasic;
 
 @Service
@@ -15,6 +16,9 @@ public class ItemService {
 
 	@Autowired
 	ItemRepository itemDAO;
+	
+	@Autowired
+	ArtifactRepository artifactDAO;
 	
 	public void save(ItemBasic item) {
 		itemDAO.save(item);
@@ -42,8 +46,150 @@ public class ItemService {
 	public ItemBasic getByName(String name) {
 		return itemDAO.findByHumanName(name);
 	}
+	
+	public void setUpArtifactDatabase() {					// call once and forget, kind of hardcoding - not deleting for possible forks
+		
+		artifactDAO.save(new Artifact("Occult Orb", "Occult Staff", "ARTEFACT_2H_ARCANESTAFF_HELL"));
+		artifactDAO.save(new Artifact("Possessed Catalyst", "Malevolent Locus", "ARTEFACT_2H_ENIGMATICORB_MORGANA"));
+		artifactDAO.save(new Artifact("Witchwork Staff", "Occult Staff", "ARTEFACT_MAIN_ARCANESTAFF_UNDEAD"));
+		
+		artifactDAO.save(new Artifact("Carved bone", "Bow of Badon", "ARTEFACT_2H_BOW_KEEPER"));
+		artifactDAO.save(new Artifact("Demonic Arrowheads", "Wailing Bow", "ARTEFACT_2H_BOW_HELL"));
+		artifactDAO.save(new Artifact("Ghastly Arrows", "Whispering Bow", "ARTEFACT_2H_LONGBOW_UNDEAD"));
+		
+		artifactDAO.save(new Artifact("Demonic Blade", "Carving Sword", "ARTEFACT_2H_CLEAVER_HELL"));
+		artifactDAO.save(new Artifact("Cursed Blades", "Galatine Pair", "ARTEFACT_2H_DUALSCIMITAR_UNDEAD"));
+		artifactDAO.save(new Artifact("Bloodforged Blade", "Clarent Blade", "ARTEFACT_MAIN_SCIMITAR_MORGANA"));
+		
+		artifactDAO.save(new Artifact("Reinforced Morgana Pole", "Black Monk Stave", "ARTEFACT_2H_COMBATSTAFF_MORGANA"));
+		artifactDAO.save(new Artifact("Preserved Rocks", "Staff of Balance", "ARTEFACT_2H_ROCKSTAFF_KEEPER"));
+		artifactDAO.save(new Artifact("Hellish Sicklehead Pair", "Soulscythe", "ARTEFACT_2H_TWINSCYTHE_HELL"));
+		
+		artifactDAO.save(new Artifact("Alluring Bolts", "Siegebow", "ARTEFACT_2H_CROSSBOWLARGE_MORGANA"));
+		artifactDAO.save(new Artifact("Hellish Bolts", "Boltcasters", "ARTEFACT_2H_DUALCROSSBOW_HELL"));
+		artifactDAO.save(new Artifact("Lost Crossbow Mechanism", "Weeping Repeater", "ARTEFACT_2H_REPEATINGCROSSBOW_UNDEAD"));
+		
+		artifactDAO.save(new Artifact("Bloodforged Catalyst", "Damnation Staff", "ARTEFACT_2H_CURSEDSTAFF_MORGANA"));
+		artifactDAO.save(new Artifact("Cursed Jawbone", "Cursed Skull", "ARTEFACT_2H_SKULLORB_HELL"));
+		artifactDAO.save(new Artifact("Lost Cursed Crystal", "Lifecurse Staff", "ARTEFACT_MAIN_CURSEDSTAFF_UNDEAD"));
+		
+		artifactDAO.save(new Artifact("Keeper Axeheads", "Bear Paws", "ARTEFACT_2H_DUALAXE_KEEPER"));
+		artifactDAO.save(new Artifact("Morgana Halberd Head", "Carrioncaller", "ARTEFACT_2H_HALBERD_MORGANA"));
+		artifactDAO.save(new Artifact("Hellish Sicklehead", "Infernal Scythe", "ARTEFACT_2H_SCYTHE_HELL"));
+		
+		artifactDAO.save(new Artifact("Hellish Hammer Heads", "Forge Hammers", "ARTEFACT_2H_DUALHAMMER_HELL"));
+		artifactDAO.save(new Artifact("Ancient Hammer Head", "Tombhammer", "ARTEFACT_2H_HAMMER_UNDEAD"));
+		artifactDAO.save(new Artifact("Engraved Log", "Grovekeeper", "ARTEFACT_2H_RAM_KEEPER"));
+		
+		artifactDAO.save(new Artifact("Ghastly Blades", "Deathgivers", "ARTEFACT_2H_DUALSICKLE_UNDEAD"));
+		artifactDAO.save(new Artifact("Black Leather", "Black Hands", "ARTEFACT_2H_IRONGAUNTLETS_HELL"));
+		artifactDAO.save(new Artifact("Hardened Debole", "Bloodletter", "ARTEFACT_MAIN_RAPIER_MORGANA"));
 
-	public void setUpDatabase() {					// call once and forget, kind of hardcoding - not deleting for possible forks				
+		artifactDAO.save(new Artifact("Burning Orb", "Brimstone Staff", "ARTEFACT_2H_FIRESTAFF_HELL"));
+		artifactDAO.save(new Artifact("Unholy Scroll", "Blazing Staff", "ARTEFACT_2H_INFERNOSTAFF_MORGANA"));
+		artifactDAO.save(new Artifact("Wildfire Orb", "Wildfire Staff", "ARTEFACT_MAIN_FIRESTAFF_KEEPER"));
+		
+		artifactDAO.save(new Artifact("Infernal Harpoon Tip", "Spirithunter", "ARTEFACT_2H_HARPOON_HELL"));
+		artifactDAO.save(new Artifact("Cursed Barbs", "Trinity Spear", "ARTEFACT_2H_TRIDENT_UNDEAD"));
+		artifactDAO.save(new Artifact("Keeper Spearhead", "Heron Spear", "ARTEFACT_MAIN_SPEAR_KEEPER"));
+		
+		artifactDAO.save(new Artifact("Possessed Scroll", "Lifetouch Staff", "ARTEFACT_MAIN_HOLYSTAFF_MORGANA"));
+		artifactDAO.save(new Artifact("Infernal Scroll", "Fallen Staff", "ARTEFACT_2H_HOLYSTAFF_HELL"));
+		artifactDAO.save(new Artifact("Ghastly Scroll", "Redemption Staff", "ARTEFACT_2H_HOLYSTAFF_UNDEAD"));
+		
+		artifactDAO.save(new Artifact("Cursed Frozen Crystal", "Permafrost Prism", "ARTEFACT_2H_ICECRYSTAL_UNDEAD"));
+		artifactDAO.save(new Artifact("Icicle Orb", "Icicle Staff", "ARTEFACT_2H_ICEGAUNTLETS_HELL"));
+		artifactDAO.save(new Artifact("Hoarfrost Orb", "Hoarfrost Staff", "ARTEFACT_MAIN_FROSTSTAFF_KEEPER"));
+		
+		artifactDAO.save(new Artifact("Imbued Mace Head", "Camlann Mace", "ARTEFACT_2H_MACE_MORGANA"));
+		artifactDAO.save(new Artifact("Infernal Mace Head", "Incubus Mace", "ARTEFACT_MAIN_MACE_HELL"));
+		artifactDAO.save(new Artifact("Runed Rock", "Bedrock Mace", "ARTEFACT_MAIN_ROCKMACE_KEEPER"));
+		
+		artifactDAO.save(new Artifact("Symbol of Blight", "Blight Staff", "ARTEFACT_2H_NATURESTAFF_HELL"));
+		artifactDAO.save(new Artifact("Preserved Log", "Rampant Staff", "ARTEFACT_2H_NATURESTAFF_KEEPER"));
+		artifactDAO.save(new Artifact("Druidic Inscriptions", "Druidic Staff", "ARTEFACT_MAIN_NATURESTAFF_KEEPER"));
+		
+		artifactDAO.save(new Artifact("Bloodstained Antiquities", "Bridled Fury", "ARTEFACT_2H_DAGGER_KATAR_AVALON"));
+		artifactDAO.save(new Artifact("Ruined Ancestral Vamplate", "Daybreaker", "ARTEFACT_MAIN_SPEAR_LANCE_AVALON"));
+		artifactDAO.save(new Artifact("Avalonian Battle Memoir", "Realmbreaker", "ARTEFACT_2H_AXE_AVALON"));
+		artifactDAO.save(new Artifact("Remnants of the Old King", "Kingmaker", "ARTEFACT_2H_CLAYMORE_AVALON"));
+		artifactDAO.save(new Artifact("Timeworn Walking Staff", "Grailseeker", "ARTEFACT_2H_QUARTERSTAFF_AVALON"));
+		artifactDAO.save(new Artifact("Massive Metallic Hand", "Hand of Justice", "ARTEFACT_2H_HAMMER_AVALON"));
+		artifactDAO.save(new Artifact("Broken Oaths", "Oathkeepers", "ARTEFACT_2H_DUALMACE_AVALON"));
+		artifactDAO.save(new Artifact("Immaculately Crafted Riser", "Mistpiercer", "ARTEFACT_2H_BOW_AVALON"));
+		artifactDAO.save(new Artifact("Humming Avalonian Whirligig", "Energy Shaper", "ARTEFACT_2H_CROSSBOW_CANNON_AVALON"));
+		artifactDAO.save(new Artifact("Fractured Opaque Orb", "Shadowcaller", "ARTEFACT_MAIN_CURSEDSTAFF_AVALON"));
+		artifactDAO.save(new Artifact("Glowing Harmonic Ring", "Dawnsong", "ARTEFACT_2H_FIRE_RINGPAIR_AVALON"));
+		artifactDAO.save(new Artifact("Chilled Crystalline Shard", "Chillhowl", "ARTEFACT_MAIN_FROSTSTAFF_AVALON"));
+		artifactDAO.save(new Artifact("Hypnotic Harmonic Ring", "Evensong", "ARTEFACT_2H_ARCANE_RINGPAIR_AVALON"));
+		artifactDAO.save(new Artifact("Messianic Curio", "Hallowfall", "ARTEFACT_MAIN_HOLYSTAFF_AVALON "));
+		artifactDAO.save(new Artifact("Uprooted Perennial Sapling", "Ironroot Staff", "ARTEFACT_MAIN_NATURESTAFF_AVALON"));
+		
+		artifactDAO.save(new Artifact("Ursine Guardian Remains", "Ursine Maulers", "ARTEFACT_2H_KNUCKLES_KEEPER"));
+		artifactDAO.save(new Artifact("Severed Demonic Horns", "Hellfire Hands", "ARTEFACT_2H_KNUCKLES_HELL"));
+		artifactDAO.save(new Artifact("Warped Raven Plate", "Ravenstrike Cestus", "ARTEFACT_2H_KNUCKLES_MORGANA"));
+		artifactDAO.save(new Artifact("Damaged Avalonian Gauntlet", "Fists of Avalon", "ARTEFACT_2H_KNUCKLES_AVALON"));
+		
+		artifactDAO.save(new Artifact("Broken Demonic Fang", "Demonfang", "ARTEFACT_MAIN_DAGGER_HELL"));
+		
+		artifactDAO.save(new Artifact("Ancient Shield Core", "Sarcophagus", "ARTEFACT_OFF_TOWERSHIELD_UNDEAD"));
+		artifactDAO.save(new Artifact("Infernal Shield Core", "Caitiff Shield", "ARTEFACT_OFF_SHIELD_HELL"));
+		artifactDAO.save(new Artifact("Bloodforged Spikes", "Facebreaker", "ARTEFACT_OFF_SPIKEDSHIELD_MORGANA"));
+		artifactDAO.save(new Artifact("Crushed Avalonian Heirloom", "Astral Aegis", "ARTEFACT_OFF_SHIELD_AVALON"));
+		
+		artifactDAO.save(new Artifact("Alluring Crystal", "Eye of Secrets", "ARTEFACT_OFF_ORB_MORGANA"));
+		artifactDAO.save(new Artifact("Demonic Jawbone", "Muisak", "ARTEFACT_OFF_DEMONSKULL_HELL"));
+		artifactDAO.save(new Artifact("Inscribed Stone", "Taproot", "ARTEFACT_OFF_TOTEM_KEEPER"));
+		artifactDAO.save(new Artifact("Severed Celestial Keepsake", "Celestial Censer", "ARTEFACT_OFF_CENSER_AVALON"));
+		
+		artifactDAO.save(new Artifact("Runed Horn", "Mistcaller", "ARTEFACT_OFF_HORN_KEEPER"));
+		artifactDAO.save(new Artifact("Hellish Handle", "Leering Cane", "ARTEFACT_OFF_JESTERCANE_HELL"));
+		artifactDAO.save(new Artifact("Ghastly Candle", "Cryptcandle", "ARTEFACT_OFF_LAMP_UNDEAD"));
+		artifactDAO.save(new Artifact("Shattered Avalonian Memento", "Sacred Scepter", "ARTEFACT_OFF_TALISMAN_AVALON"));
+		
+		artifactDAO.save(new Artifact("Ancient Padding", "Graveguard Helmet", "ARTEFACT_HEAD_PLATE_UNDEAD"));
+		artifactDAO.save(new Artifact("Ancient Chain Rings", "Graveguard Armor", "ARTEFACT_ARMOR_PLATE_UNDEAD"));
+		artifactDAO.save(new Artifact("Ancient Bindings", "Graveguard Boots", "ARTEFACT_SHOES_PLATE_UNDEAD"));
+		artifactDAO.save(new Artifact("Demonic Scraps", "Demon Helmet", "ARTEFACT_HEAD_PLATE_HELL"));
+		artifactDAO.save(new Artifact("Demonic Plates", "Demon Armor", "ARTEFACT_ARMOR_PLATE_HELL"));
+		artifactDAO.save(new Artifact("Demonic Filling", "Demon Boots", "ARTEFACT_SHOES_PLATE_HELL"));
+		artifactDAO.save(new Artifact("Carved Skull Padding", "Judicator Helmet", "ARTEFACT_HEAD_PLATE_KEEPER"));
+		artifactDAO.save(new Artifact("Preserved Animal Fur", "Judicator Armor", "ARTEFACT_ARMOR_PLATE_KEEPER"));
+		artifactDAO.save(new Artifact("Inscribed Bindings", "Judicator Boots", "ARTEFACT_SHOES_PLATE_KEEPER"));
+		artifactDAO.save(new Artifact("Exalted Visor", "Helmet of Valor", "ARTEFACT_HEAD_PLATE_AVALON"));
+		artifactDAO.save(new Artifact("Exalted Plating", "Armor of Valor", "ARTEFACT_ARMOR_PLATE_AVALON"));
+		artifactDAO.save(new Artifact("Exalted Greave", "Boots of Valor", "ARTEFACT_SHOES_PLATE_AVALON"));
+		
+		artifactDAO.save(new Artifact("Imbued Visor", "Stalker Hood", "ARTEFACT_HEAD_LEATHER_MORGANA"));
+		artifactDAO.save(new Artifact("Imbued Leather Folds", "Stalker Jacket", "ARTEFACT_ARMOR_LEATHER_MORGANA"));
+		artifactDAO.save(new Artifact("Imbued Soles", "Stalker Shoes", "ARTEFACT_SHOES_LEATHER_MORGANA"));
+		artifactDAO.save(new Artifact("Demonhide Padding", "Hellion Hood", "ARTEFACT_HEAD_LEATHER_HELL"));
+		artifactDAO.save(new Artifact("Demonhide Leather", "Hellion Jacket", "ARTEFACT_ARMOR_LEATHER_HELL"));
+		artifactDAO.save(new Artifact("Demonhide Bindings", "Hellion Shoes", "ARTEFACT_SHOES_LEATHER_HELL"));
+		artifactDAO.save(new Artifact("Ghastly Visor", "Specter Hood", "ARTEFACT_HEAD_LEATHER_UNDEAD"));
+		artifactDAO.save(new Artifact("Ghastly Leather", "Specter Jacket", "ARTEFACT_ARMOR_LEATHER_UNDEAD"));
+		artifactDAO.save(new Artifact("Ghastly Bindings", "Specter Shoes", "ARTEFACT_SHOES_LEATHER_UNDEAD"));
+		artifactDAO.save(new Artifact("Augured Padding", "Hood of Tenacity", "ARTEFACT_HEAD_LEATHER_AVALON"));
+		artifactDAO.save(new Artifact("Augured Sash", "Jacket of Tenacity", "ARTEFACT_ARMOR_LEATHER_AVALON"));
+		artifactDAO.save(new Artifact("Augured Fasteners", "Shoes of Tenacity", "ARTEFACT_SHOES_LEATHER_AVALON"));
+		
+		artifactDAO.save(new Artifact("Druidic Preserved Beak", "Druid Cowl", "ARTEFACT_HEAD_CLOTH_KEEPER"));
+		artifactDAO.save(new Artifact("Druidic Feathers", "Druid Robe", "ARTEFACT_ARMOR_CLOTH_KEEPER"));
+		artifactDAO.save(new Artifact("Druidic Bindings", "Druid Sandals", "ARTEFACT_SHOES_CLOTH_KEEPER"));
+		artifactDAO.save(new Artifact("Infernal Cloth Visor", "Fiend Cowl", "ARTEFACT_HEAD_CLOTH_HELL"));
+		artifactDAO.save(new Artifact("Infernal Cloth Folds", "Fiend Robe", "ARTEFACT_ARMOR_CLOTH_HELL"));
+		artifactDAO.save(new Artifact("Infernal Cloth Bindings", "Fiend Sandals", "ARTEFACT_SHOES_CLOTH_HELL"));
+		artifactDAO.save(new Artifact("Alluring Padding", "Cultist Cowl", "ARTEFACT_HEAD_CLOTH_MORGANA"));
+		artifactDAO.save(new Artifact("Alluring Amulet", "Cultist Robe", "ARTEFACT_ARMOR_CLOTH_MORGANA"));
+		artifactDAO.save(new Artifact("Alluring Bindings", "Cultist Sandals", "ARTEFACT_SHOES_CLOTH_MORGANA"));
+		artifactDAO.save(new Artifact("Sanctified Mask", "Cowl of Purity", "ARTEFACT_HEAD_CLOTH_AVALON"));
+		artifactDAO.save(new Artifact("Sanctified Belt", "Robe of Purity", "ARTEFACT_ARMOR_CLOTH_AVALON"));
+		artifactDAO.save(new Artifact("Sanctified Bindings", "Sandals of Purity", "ARTEFACT_SHOES_CLOTH_AVALON"));
+		
+
+	}
+
+	public void setUpAmmunitionDatabase() {					// call once and forget, kind of hardcoding - not deleting for possible forks				
 		
 		save(new ItemBasic("Crossbow", "2H_CROSSBOW", "Crossbows", "Warrior"));
 		save(new ItemBasic("Heavy Crossbow", "2H_CROSSBOWLARGE", "Crossbows", "Warrior"));
@@ -235,13 +381,13 @@ public class ItemService {
 		save(new ItemBasic("Chillhowl", "MAIN_FROSTSTAFF_AVALON", "Frost", "Mage"));
 		save(new ItemBasic("Permafrost Prism", "2H_ICECRYSTAL_UNDEAD", "Frost", "Mage"));
 		
-		save(new ItemBasic("Holy Staff", "MAIN_HOLYSTAFF", "Frost", "Mage"));
-		save(new ItemBasic("Lifetouch Staff", "MAIN_HOLYSTAFF_MORGANA", "Frost", "Mage"));
-		save(new ItemBasic("Fallen Staff", "2H_HOLYSTAFF_HELL", "Frost", "Mage"));
-		save(new ItemBasic("Great Holy Staff", "2H_HOLYSTAFF", "Frost", "Mage"));			// holy
-		save(new ItemBasic("Divine Staff", "2H_DIVINESTAFF", "Frost", "Mage"));
-		save(new ItemBasic("Hallowfall", "MAIN_HOLYSTAFF_AVALON", "Frost", "Mage"));
-		save(new ItemBasic("Redemption Staff", "2H_HOLYSTAFF_UNDEAD", "Frost", "Mage"));
+		save(new ItemBasic("Holy Staff", "MAIN_HOLYSTAFF", "Holy", "Mage"));
+		save(new ItemBasic("Lifetouch Staff", "MAIN_HOLYSTAFF_MORGANA", "Holy", "Mage"));
+		save(new ItemBasic("Fallen Staff", "2H_HOLYSTAFF_HELL", "Holy", "Mage"));
+		save(new ItemBasic("Great Holy Staff", "2H_HOLYSTAFF", "Holy", "Mage"));			// holy
+		save(new ItemBasic("Divine Staff", "2H_DIVINESTAFF", "Holy", "Mage"));
+		save(new ItemBasic("Hallowfall", "MAIN_HOLYSTAFF_AVALON", "Holy", "Mage"));
+		save(new ItemBasic("Redemption Staff", "2H_HOLYSTAFF_UNDEAD", "Holy", "Mage"));
 		
 		save(new ItemBasic("Tome of Spells", "OFF_BOOK", "Talismans", "Mage"));
 		save(new ItemBasic("Eye of Secrets", "OFF_ORB_MORGANA", "Talismans", "Mage"));
