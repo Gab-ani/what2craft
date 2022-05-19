@@ -1,10 +1,5 @@
 package albionDataCommunication;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -12,33 +7,31 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import logic.ItemBasic;
+import logic.ItemCombined;
 
 @Service
 public class DataFetcher {	
 	
-	private String buildURL(ItemBasic base, int tier, int chant, int quality, String city) {
+	private String buildURL(ItemCombined item, String city) {
 		String url = "https://www.albion-online-data.com/api/v2/stats/prices/";
-		url += "T" + tier + "_";
-		url += base.getRequestName();
-		if(chant != 0)
-			url += "@" + chant;
+		url += "T" + item.getTier() + "_";
+		url += item.getRequestName();
+		if(item.getChant() != 0)
+			url += "@" + item.getChant();
 		url += ".json?locations=" + city;
-		url += "&qualities=" + quality;
+		url += "&qualities=" + item.getQuality();
 		return url;
 	}
 	
 	
 	
-	public PriceResponse[] fetchActualData(ItemBasic base, int tier, int chant, int quality, String city) throws JsonMappingException, JsonProcessingException, RestClientException {
+	public PriceResponse fetchActualData(ItemCombined item, String city) throws JsonMappingException, JsonProcessingException, RestClientException {
 		RestTemplate restTemplate = new RestTemplate();
 		
-		ResponseEntity<PriceResponse[]> response = restTemplate.getForEntity(buildURL(base, tier, chant, quality, city), PriceResponse[].class);
+		ResponseEntity<PriceResponse[]> response = restTemplate.getForEntity(buildURL(item, city), PriceResponse[].class);
 		PriceResponse[] prices = response.getBody();
 		
-		return prices;
+		return prices[0];
 	}
 	
 	

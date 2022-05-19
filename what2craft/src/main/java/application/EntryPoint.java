@@ -33,9 +33,11 @@ import albionDataCommunication.DataFetcher;
 import albionDataCommunication.PriceResponse;
 import database.ItemService;
 import logic.ItemBasic;
+import logic.ItemCombined;
+import logic.Prices;
 
 @EnableJpaRepositories({"database"})
-@ComponentScan({"database"})
+@ComponentScan({"database", "albionDataCommunication"})
 @EntityScan({"logic"})
 @Configuration
 @SpringBootApplication
@@ -45,14 +47,35 @@ public class EntryPoint {
 	@Lazy
 	ItemService itemService;
 	
+	@Autowired
+	@Lazy
+	Prices prices;
+	
+	@Autowired
+	DataFetcher dataFetcher;
+	
 	@Bean
-	public DataFetcher dataFetcher() {
-		return new DataFetcher();
+	public Prices pricesBean() {
+		return new Prices(itemService.getArtifactsList());
 	}
 	
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
+			
+			ArrayList<ItemCombined> itemsToMemorize = new ArrayList<>();
+			
+			itemsToMemorize.add( ItemCombined.forBase( itemService.getByName("Bow") ).forTier(5).withEnchantmentLevelOf(1).ofQuality(1));
+			itemsToMemorize.add( ItemCombined.forBase( itemService.getByName("Longbow") ).forTier(5).withEnchantmentLevelOf(1).ofQuality(1));
+			itemsToMemorize.add( ItemCombined.forBase( itemService.getByName("Occult Staff") ).forTier(5).withEnchantmentLevelOf(1).ofQuality(1));
+			itemsToMemorize.add( ItemCombined.forBase( itemService.getByName("Judicator Armor") ).forTier(5).withEnchantmentLevelOf(1).ofQuality(1));
+			
+//			itemsToMemorize.forEach(item -> System.out.println(item.toString()));
+			
+			prices.memorize(itemsToMemorize, "lymhurst");
+			prices.visualiseItemMemory("lymhurst");
+			
+			prices.visualiseMaterial("lymhurst", "planks");
 			
 //			ItemBasic item = itemService.getByName("Claymore");
 //			

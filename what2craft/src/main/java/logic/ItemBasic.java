@@ -13,7 +13,7 @@ import net.bytebuddy.description.type.TypeDescription.Generic.Visitor.Reifying;
 
 @Entity
 @Table(name = "item_basic")
-public class ItemBasic {
+public class ItemBasic {					// representation of abstract "type" of item (see as "ingame sprite" property), in other words, "all claymores" shared properties etc.
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -35,6 +35,10 @@ public class ItemBasic {
 		this.requestName = requestName;
 		this.craftNode = craftNode;
 		this.craftBranch = craftBranch;
+	}
+	
+	public String getName() {
+		return humanName;
 	}
 	
 	public String getRequestName() {

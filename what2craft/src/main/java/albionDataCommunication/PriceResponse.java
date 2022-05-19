@@ -1,5 +1,8 @@
 package albionDataCommunication;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import logic.ItemBasic;
@@ -28,15 +31,21 @@ public class PriceResponse {
 	private int buyPriceMax;
 	@JsonProperty("buy_price_max_date")
 	private String buyPriceMaxDate;
-	
-	
-	
-//	public Item toItem() {
-//		
-//	}
 
 
-
+	
+	public boolean isActual() {
+		if(sellPriceMin != 0 && ( LocalDateTime.now().isAfter( parseDate(sellPriceMinDate).minusMinutes(5) ) ) )		// ie we didn't get 0 price from request and it's last update was recent
+			return true;
+		return false;
+	}
+	
+	private LocalDateTime parseDate(String date) {
+		LocalDateTime lastUpdate = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+		//System.out.println(lastUpdate);
+		return lastUpdate;
+	}
+	
 	public String getItemId() {
 		return itemId;
 	}

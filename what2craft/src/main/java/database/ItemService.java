@@ -3,6 +3,7 @@ package database;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,13 @@ public class ItemService {
 //	}
 	
 	public ItemBasic getByName(String name) {
-		return itemDAO.findByHumanName(name);
+		ItemBasic item = itemDAO.findByHumanName(name);
+		System.out.println(item.getName());
+		return item;
+	}
+	
+	public List<Artifact> getArtifactsList() {
+		return artifactDAO.findAll();
 	}
 	
 	public void setUpArtifactDatabase() {					// call once and forget, kind of hardcoding - not deleting for possible forks
@@ -359,7 +366,7 @@ public class ItemService {
 		
 		save(new ItemBasic("Fire Staff", "MAIN_FIRESTAFF", "Fire", "Mage"));
 		save(new ItemBasic("Brimstone Staff", "2H_FIRESTAFF_HELL", "Fire", "Mage"));
-		save(new ItemBasic("Longbow", "2H_FIRESTAFF", "Fire", "Mage"));
+		save(new ItemBasic("Great Fire Staff", "2H_FIRESTAFF", "Fire", "Mage"));
 		save(new ItemBasic("Infernal Staff", "2H_INFERNOSTAFF", "Fire", "Mage"));			// fire
 		save(new ItemBasic("Wildfire Staff", "MAIN_FIRESTAFF_KEEPER", "Fire", "Mage"));
 		save(new ItemBasic("Blazing Staff", "2H_INFERNOSTAFF_MORGANA", "Fire", "Mage"));
