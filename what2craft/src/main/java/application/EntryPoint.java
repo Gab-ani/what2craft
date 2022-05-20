@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import albionDataCommunication.DataFetcher;
 import albionDataCommunication.PriceResponse;
 import database.ItemService;
+import database.StatService;
 import logic.ItemBasic;
 import logic.ItemCombined;
 import logic.Prices;
@@ -46,6 +47,9 @@ public class EntryPoint {
 	@Autowired
 	@Lazy
 	ItemService itemService;
+	
+	@Autowired
+	StatService statService;
 	
 	@Autowired
 	@Lazy
@@ -63,19 +67,22 @@ public class EntryPoint {
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 			
-			ArrayList<ItemCombined> itemsToMemorize = new ArrayList<>();
+		
+//			itemService.findByTags(new String[] {"Mage",  "Bows", "Swords"}, 5, 1).forEach(item -> System.out.println(item.getName()));
 			
-			itemsToMemorize.add( ItemCombined.forBase( itemService.getByName("Bow") ).forTier(5).withEnchantmentLevelOf(1).ofQuality(1));
-			itemsToMemorize.add( ItemCombined.forBase( itemService.getByName("Longbow") ).forTier(5).withEnchantmentLevelOf(1).ofQuality(1));
-			itemsToMemorize.add( ItemCombined.forBase( itemService.getByName("Occult Staff") ).forTier(5).withEnchantmentLevelOf(1).ofQuality(1));
-			itemsToMemorize.add( ItemCombined.forBase( itemService.getByName("Judicator Armor") ).forTier(5).withEnchantmentLevelOf(1).ofQuality(1));
-			
+//			ArrayList<ItemCombined> itemsToMemorize = new ArrayList<>();
+//			
+//			itemsToMemorize.add( ItemCombined.forBase( itemService.getByName("Bow") ).forTier(5).withEnchantmentLevelOf(1).ofQuality(1));
+//			itemsToMemorize.add( ItemCombined.forBase( itemService.getByName("Longbow") ).forTier(5).withEnchantmentLevelOf(1).ofQuality(1));
+//			itemsToMemorize.add( ItemCombined.forBase( itemService.getByName("Occult Staff") ).forTier(5).withEnchantmentLevelOf(1).ofQuality(1));
+//			itemsToMemorize.add( ItemCombined.forBase( itemService.getByName("Judicator Armor") ).forTier(5).withEnchantmentLevelOf(1).ofQuality(1));
+//			
 //			itemsToMemorize.forEach(item -> System.out.println(item.toString()));
-			
-			prices.memorize(itemsToMemorize, "lymhurst");
-			prices.visualiseItemMemory("lymhurst");
-			
-			prices.visualiseMaterial("lymhurst", "planks");
+//			
+//			prices.memorize(itemsToMemorize, "lymhurst");
+//			prices.visualiseItemMemory("lymhurst");
+//			
+//			prices.visualiseMaterial("lymhurst", "planks");
 			
 //			ItemBasic item = itemService.getByName("Claymore");
 //			

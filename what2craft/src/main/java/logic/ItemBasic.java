@@ -26,6 +26,8 @@ public class ItemBasic {					// representation of abstract "type" of item (see a
 	private String craftNode;
 	private String craftBranch;
 	
+	private String[] recipe;
+	
 	public ItemBasic() {
 		
 	}
@@ -45,9 +47,14 @@ public class ItemBasic {					// representation of abstract "type" of item (see a
 		return this.requestName;
 	}
 	
-//	public Recipe getRecipe() {
-//		return recipe;
-//	}
+	public String[] getRecipe() {
+		return recipe;
+	}
+	
+	public ItemBasic setRecipe(String[] recipe) {		// kinda "fake function" used only on db-setup period, returning self to allow   save ( getByName(name).setRecipe(...) ); syntax
+		this.recipe = recipe;
+		return this;
+	}
 //	
 //	public int getGradesToChant() {
 //		return recipe.totalMaterials() * 6;

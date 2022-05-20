@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import logic.Artifact;
 import logic.ItemBasic;
+import logic.ItemCombined;
 
 @Service
 public class ItemService {
@@ -20,6 +21,9 @@ public class ItemService {
 	
 	@Autowired
 	ArtifactRepository artifactDAO;
+	
+	@Autowired
+	RecipeRepository recipeDAO;
 	
 	public void save(ItemBasic item) {
 		itemDAO.save(item);
@@ -36,13 +40,27 @@ public class ItemService {
 		return lines;
 	}
 	
-//	public void setupAmmunitionBase() {
-//		try {
-//			getRawAmmunition().forEach((string) -> save(ItemBasic.parseAmmunition(string)));
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public ArrayList<ItemCombined> findByTags(ArrayList<String>	tags, int tier, int enchantmentLevel) {
+		ArrayList<ItemCombined> result = new ArrayList<>();
+		
+		ArrayList<ItemBasic> bases = new ArrayList<>();
+		for(String tag : tags) {
+			bases.addAll(findByTag(tag));
+		}
+		
+		bases.forEach(base -> {
+			result.add( ItemCombined. forBase( base ).forTier( tier ). withEnchantmentLevelOf( enchantmentLevel ). ofQuality(1) );		
+		});
+		
+		return result;
+	}
+	
+	private ArrayList<ItemBasic> findByTag(String tag) {
+		ArrayList<ItemBasic> result = new ArrayList<>();
+		result.addAll(itemDAO.findByCraftBranch(tag));
+		result.addAll(itemDAO.findByCraftNode(tag));
+		return result;
+	}
 	
 	public ItemBasic getByName(String name) {
 		ItemBasic item = itemDAO.findByHumanName(name);
@@ -429,6 +447,189 @@ public class ItemService {
 		save(new ItemBasic("Sandals of Purity", "SHOES_CLOTH_AVALON", "Sandals", "Mage"));
 		save(new ItemBasic("Royal Sandals", "SHOES_CLOTH_ROYAL", "Sandals", "Mage"));
 		
+	}
+	
+	public void setupRecipeDatabase() {											// call once and forget, kind of hardcoding - not deleting for possible forks	
+		itemDAO.setRecipe("Broadsword", new String[] {"16", "ingots", "8", "leather"});
+		itemDAO.setRecipe("Claymore", new String[] {"20", "ingots", "12", "leather"});
+		itemDAO.setRecipe("Kingmaker", new String[] {"20", "ingots", "12", "leather"});
+		itemDAO.setRecipe("Dual Swords", new String[] {"20", "ingots", "12", "leather"});
+		itemDAO.setRecipe("Clarent Blade", new String[] {"16", "ingots", "8", "leather"});
+		itemDAO.setRecipe("Carving Sword", new String[] {"20", "ingots", "12", "leather"});
+		itemDAO.setRecipe("Galatine Pair", new String[] {"20", "ingots", "12", "leather"});
+		
+		itemDAO.setRecipe("Battleaxe", new String[] {"8", "planks", "16", "ingots"});
+		itemDAO.setRecipe("Greataxe", new String[] {"12", "planks", "20", "ingots"});
+		itemDAO.setRecipe("Realmbreaker", new String[] {"12", "planks", "20", "ingots"});
+		itemDAO.setRecipe("Infernal Scythe", new String[] {"12", "planks", "20", "ingots"});
+		itemDAO.setRecipe("Bear Paws", new String[] {"12", "planks", "20", "ingots"});
+		itemDAO.setRecipe("Carrioncaller", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Halberd", new String[] {"20", "planks", "12", "ingots"});
+		
+		itemDAO.setRecipe("Mace", new String[] {"16", "ingots", "8", "cloth"});
+		itemDAO.setRecipe("Incubus Mace", new String[] {"16", "ingots", "8", "cloth"});
+		itemDAO.setRecipe("Bedrock Mace", new String[] {"16", "ingots", "8", "cloth"});
+		itemDAO.setRecipe("Heavy Mace", new String[] {"20", "ingots", "12", "cloth"});
+		itemDAO.setRecipe("Morning Star", new String[] {"20", "ingots", "12", "cloth"});
+		itemDAO.setRecipe("Camlann Mace", new String[] {"20", "ingots", "12", "cloth"});
+		itemDAO.setRecipe("Oathkeepers", new String[] {"20", "ingots", "12", "cloth"});
+		
+		itemDAO.setRecipe("Hammer", new String[] {"24", "ingots"});
+		itemDAO.setRecipe("Polehammer", new String[] {"20", "ingots", "12", "cloth"});
+		itemDAO.setRecipe("Tombhammer", new String[] {"20", "ingots", "12", "cloth"});
+		itemDAO.setRecipe("Forge Hammers", new String[] {"20", "ingots", "12", "cloth"});
+		itemDAO.setRecipe("Grovekeeper", new String[] {"20", "ingots", "12", "cloth"});
+		itemDAO.setRecipe("Great Hammer", new String[] {"20", "ingots", "12", "cloth"});
+		itemDAO.setRecipe("Hand of Justice", new String[] {"20", "ingots", "12", "cloth"});
+		
+		itemDAO.setRecipe("Brawler Gloves", new String[] {"12", "ingots", "20", "leather"});
+		itemDAO.setRecipe("Spiked Gauntlets", new String[] {"12", "ingots", "20", "leather"});
+		itemDAO.setRecipe("Ursine Maulers", new String[] {"12", "ingots", "20", "leather"});
+		itemDAO.setRecipe("Hellfire Hands", new String[] {"12", "ingots", "20", "leather"});
+		itemDAO.setRecipe("Battle Bracers", new String[] {"12", "ingots", "20", "leather"});
+		itemDAO.setRecipe("Ravenstrike Cestus", new String[] {"12", "ingots", "20", "leather"});
+		itemDAO.setRecipe("Fists of Avalon", new String[] {"12", "ingots", "20", "leather"});
+		
+		itemDAO.setRecipe("Light Crossbow", new String[] {"16", "planks", "8", "ingots"});
+		itemDAO.setRecipe("Crossbow", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Heavy Crossbow", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Weeping Repeater", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Boltcasters", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Siegebow", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Energy Shaper", new String[] {"20", "planks", "12", "ingots"});
+		
+		itemDAO.setRecipe("Bow", new String[] {"32", "planks"});
+		itemDAO.setRecipe("Warbow", new String[] {"32", "planks"});
+		itemDAO.setRecipe("Longbow", new String[] {"32", "planks"});
+		itemDAO.setRecipe("Whispering Bow", new String[] {"32", "planks"});
+		itemDAO.setRecipe("Bow of Badon", new String[] {"32", "planks"});
+		itemDAO.setRecipe("Mistpiercer", new String[] {"32", "planks"});
+		itemDAO.setRecipe("Wailing Bow", new String[] {"32", "planks"});
+		
+		itemDAO.setRecipe("Spear", new String[] {"16", "planks", "8", "ingots"});
+		itemDAO.setRecipe("Heron Spear", new String[] {"16", "planks", "8", "ingots"});
+		itemDAO.setRecipe("Daybreaker", new String[] {"16", "planks", "8", "ingots"});
+		itemDAO.setRecipe("Spirithunter", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Trinity Spear", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Pike", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Glaive", new String[] {"12", "planks", "20", "ingots"});
+		
+		itemDAO.setRecipe("Nature Staff", new String[] {"16", "planks", "8", "cloth"});
+		itemDAO.setRecipe("Ironroot Staff", new String[] {"16", "planks", "8", "cloth"});
+		itemDAO.setRecipe("Druidic Staff", new String[] {"16", "planks", "8", "cloth"});
+		itemDAO.setRecipe("Great Nature Staff", new String[] {"20", "planks", "12", "cloth"});
+		itemDAO.setRecipe("Rampant Staff", new String[] {"20", "planks", "12", "cloth"});
+		itemDAO.setRecipe("Blight Staff", new String[] {"20", "planks", "12", "cloth"});
+		itemDAO.setRecipe("Wild Staff", new String[] {"20", "planks", "12", "cloth"});
+		
+		itemDAO.setRecipe("Dagger", new String[] {"12", "ingots", "12", "leather"});
+		itemDAO.setRecipe("Demonfang", new String[] {"12", "ingots", "12", "leather"});
+		itemDAO.setRecipe("Deathgivers", new String[] {"16", "ingots", "16", "leather"});
+		itemDAO.setRecipe("Dagger Pair", new String[] {"16", "ingots", "16", "leather"});
+		itemDAO.setRecipe("Bridled Fury", new String[] {"12", "ingots", "20", "leather"});
+		itemDAO.setRecipe("Claws", new String[] {"12", "ingots", "20", "leather"});
+		itemDAO.setRecipe("Bloodletter", new String[] {"16", "ingots", "8", "leather"});
+
+		itemDAO.setRecipe("Quarterstaff", new String[] {"12", "ingots", "20", "leather"});
+		itemDAO.setRecipe("Soulscythe", new String[] {"12", "ingots", "20", "leather"});
+		itemDAO.setRecipe("Black Monk Stave", new String[] {"12", "ingots", "20", "leather"});
+		itemDAO.setRecipe("Grailseeker", new String[] {"12", "ingots", "20", "leather"});
+		itemDAO.setRecipe("Double Bladed Staff", new String[] {"12", "ingots", "20", "leather"});
+		itemDAO.setRecipe("Staff of Balance", new String[] {"12", "ingots", "20", "leather"});
+		itemDAO.setRecipe("Iron-clad Staff", new String[] {"12", "ingots", "20", "leather"});
+		
+		itemDAO.setRecipe("Fire Staff", new String[] {"16", "planks", "8", "ingots"});
+		itemDAO.setRecipe("Wildfire Staff", new String[] {"16", "planks", "8", "ingots"});
+		itemDAO.setRecipe("Brimstone Staff", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Infernal Staff", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Blazing Staff", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Dawnsong", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Great Fire Staff", new String[] {"20", "planks", "12", "ingots"});
+
+		itemDAO.setRecipe("Holy Staff", new String[] {"16", "planks", "8", "cloth"});
+		itemDAO.setRecipe("Lifetouch Staff", new String[] {"16", "planks", "8", "cloth"});
+		itemDAO.setRecipe("Hallowfall", new String[] {"16", "planks", "8", "cloth"});		
+		itemDAO.setRecipe("Redemption Staff", new String[] {"20", "planks", "12", "cloth"});
+		itemDAO.setRecipe("Fallen Staff", new String[] {"20", "planks", "12", "cloth"});
+		itemDAO.setRecipe("Great Holy Staff", new String[] {"20", "planks", "12", "cloth"});
+		itemDAO.setRecipe("Divine Staff", new String[] {"20", "planks", "12", "cloth"});
+		
+		itemDAO.setRecipe("Arcane Staff", new String[] {"16", "planks", "8", "ingots"});
+		itemDAO.setRecipe("Witchwork Staff", new String[] {"16", "planks", "8", "ingots"});
+		itemDAO.setRecipe("Enigmatic Staff", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Occult Staff", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Great Arcane Staff", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Evensong", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Malevolent Locus", new String[] {"20", "planks", "12", "ingots"});
+
+		itemDAO.setRecipe("Frost Staff", new String[] {"16", "planks", "8", "ingots"});
+		itemDAO.setRecipe("Hoarfrost Staff", new String[] {"16", "planks", "8", "ingots"});
+		itemDAO.setRecipe("Chillhowl", new String[] {"16", "planks", "8", "ingots"});
+		itemDAO.setRecipe("Great Frost Staff", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Icicle Staff", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Glacial Staff", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Permafrost Prism", new String[] {"20", "planks", "12", "ingots"});
+		
+		itemDAO.setRecipe("Cursed Staff", new String[] {"16", "planks", "8", "ingots"});
+		itemDAO.setRecipe("Lifecurse Staff", new String[] {"16", "planks", "8", "ingots"});
+		itemDAO.setRecipe("Shadowcaller", new String[] {"16", "planks", "8", "ingots"});
+		itemDAO.setRecipe("Great Cursed Staff", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Great Fire Staff", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Cursed Skull", new String[] {"20", "planks", "12", "ingots"});
+		itemDAO.setRecipe("Damnation Staff", new String[] {"20", "planks", "12", "ingots"});
+		
+		ArrayList<ItemBasic> talismans = findByTag("Talismans");
+		talismans.forEach(talisman -> {
+			itemDAO.setRecipe(talisman.getName(), new String[] {"4", "cloth", "4", "leather"});
+//			save(talisman.setRecipe(new String[] {"4", "cloth", "4", "leather"});
+		});
+		ArrayList<ItemBasic> shields = findByTag("Shields");
+		shields.forEach(shield -> {
+			itemDAO.setRecipe(shield.getName(), new String[] {"4", "planks", "4", "ingots"});
+		});
+		ArrayList<ItemBasic> torches = findByTag("Torches");
+		torches.forEach(torch -> {
+			itemDAO.setRecipe(torch.getName(), new String[] {"4", "planks", "4", "cloth"});
+		});
+		
+		ArrayList<ItemBasic> robes = findByTag("Robes");
+		robes.forEach(robe -> {
+			itemDAO.setRecipe(robe.getName(), new String[] {"16", "cloths"});
+		});
+		ArrayList<ItemBasic> armors = findByTag("Armor");
+		armors.forEach(armor -> {
+			itemDAO.setRecipe(armor.getName(), new String[] {"16", "ingots"});
+		});
+		ArrayList<ItemBasic> jackets = findByTag("Jackets");
+		jackets.forEach(jacket -> {
+			itemDAO.setRecipe(jacket.getName(), new String[] {"16", "leather"});
+		});
+		
+		ArrayList<ItemBasic> sandals = findByTag("Sandals");
+		sandals.forEach(sandal -> {
+			itemDAO.setRecipe(sandal.getName(), new String[] {"8", "cloths"});
+		});
+		ArrayList<ItemBasic> boots = findByTag("Boots");
+		boots.forEach(boot -> {
+			itemDAO.setRecipe(boot.getName(), new String[] {"8", "ingots"});
+		});
+		ArrayList<ItemBasic> shoes = findByTag("Shoes");
+		shoes.forEach(shoe -> {
+			itemDAO.setRecipe(shoe.getName(), new String[] {"8", "leather"});
+		});
+		
+		ArrayList<ItemBasic> cowls = findByTag("Cowls");
+		cowls.forEach(cowl -> {
+			itemDAO.setRecipe(cowl.getName(), new String[] {"8", "cloths"});
+		});
+		ArrayList<ItemBasic> helmets = findByTag("Helmets");
+		helmets.forEach(helmet -> {
+			itemDAO.setRecipe(helmet.getName(), new String[] {"8", "ingots"});
+		});
+		ArrayList<ItemBasic> hoods = findByTag("Hoods");
+		hoods.forEach(hood -> {
+			itemDAO.setRecipe(hood.getName(), new String[] {"8", "leather"});
+		});
 	}
 	
 }
