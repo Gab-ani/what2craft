@@ -22,9 +22,6 @@ public class ItemService {
 	@Autowired
 	ArtifactRepository artifactDAO;
 	
-	@Autowired
-	RecipeRepository recipeDAO;
-	
 	public void save(ItemBasic item) {
 		itemDAO.save(item);
 	}
