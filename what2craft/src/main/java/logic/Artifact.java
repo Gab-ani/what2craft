@@ -14,6 +14,7 @@ public class Artifact {
 	private String name;
 	private String partOf;
 	private String requestName;
+	private String type;			
 	
 	public Artifact() {
 		
@@ -25,4 +26,23 @@ public class Artifact {
 		this.requestName = requestName;
 	}
 	
+	public String name() {
+		return name;
+	}
+	
+	public String partOf() {
+		return partOf;
+	}
+	
+	public String requestName() {
+		return requestName;
+	}
+	
+	public String type() {
+		return type;
+	}
+	
+	public int getId() {
+		return id;
+	}
 }

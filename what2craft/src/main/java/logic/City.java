@@ -44,4 +44,16 @@ public class City {
 		return warriorTax;
 	}
 	
+	public String name() {
+		return name;
+	}
+	
+	public double bonusReturn() {
+		return bonusNodesValue;
+	}
+	
+	public static double defaultReturns() {
+		return 1.18;
+	}
+	
 }

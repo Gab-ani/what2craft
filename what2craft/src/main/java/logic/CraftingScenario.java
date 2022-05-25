@@ -7,7 +7,6 @@ public class CraftingScenario {
 	private int straightCraftLevel;
 	
 	
-	
 	public CraftingScenario() {
 		
 	}
@@ -28,5 +27,17 @@ public class CraftingScenario {
 	public ItemCombined getResult() {
 		return result;
 	}
+	
+	public boolean requiresArtifact() {
+		return result.containsArtifact();
+	}
+	
+	public ItemCombined getStraighCrafttStub() {
+		return ItemCombined.forBase(result.getBase()).forTier(result.getTier()).withEnchantmentLevelOf(straightCraftLevel).ofQuality(1);
+	}
+	
+//	public String requiredArtifactName() {
+//		return result.artifactName();
+//	}
 	
 }

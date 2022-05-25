@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import logic.City;
+import logic.ItemCombined;
 
 @Service
 public class StatService {
+	
+	public static final int[] journalsFame = new int[] {0, 900, 1800, 3600, 7200, 14400, 28380, 58590};
 	
 	@Autowired
 	CityRepository cityDAO;

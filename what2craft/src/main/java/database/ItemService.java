@@ -69,11 +69,15 @@ public class ItemService {
 		return artifactDAO.findAll();
 	}
 	
+	public Artifact artifactByName(String name) {
+		return artifactDAO.findByName(name);
+	}
+	
 	public void setUpArtifactDatabase() {					// call once and forget, kind of hardcoding - not deleting for possible forks
 		
 		artifactDAO.save(new Artifact("Occult Orb", "Occult Staff", "ARTEFACT_2H_ARCANESTAFF_HELL"));
 		artifactDAO.save(new Artifact("Possessed Catalyst", "Malevolent Locus", "ARTEFACT_2H_ENIGMATICORB_MORGANA"));
-		artifactDAO.save(new Artifact("Witchwork Staff", "Occult Staff", "ARTEFACT_MAIN_ARCANESTAFF_UNDEAD"));
+		artifactDAO.save(new Artifact("Witchwork Staff", "Lost Arcane Crystal", "ARTEFACT_MAIN_ARCANESTAFF_UNDEAD"));
 		
 		artifactDAO.save(new Artifact("Carved bone", "Bow of Badon", "ARTEFACT_2H_BOW_KEEPER"));
 		artifactDAO.save(new Artifact("Demonic Arrowheads", "Wailing Bow", "ARTEFACT_2H_BOW_HELL"));
@@ -626,6 +630,14 @@ public class ItemService {
 		ArrayList<ItemBasic> hoods = findByTag("Hoods");
 		hoods.forEach(hood -> {
 			itemDAO.setRecipe(hood.getName(), new String[] {"8", "leather"});
+		});
+	}
+	
+	public void linkArtsAndItems() {						// TODO rewrite this shit to JPA field linking
+		artifactDAO.findAll().forEach(artifact -> {
+			ItemBasic item = itemDAO.findByHumanName(artifact.partOf());
+			item.setArtifact(artifact);
+			save(item);
 		});
 	}
 	
