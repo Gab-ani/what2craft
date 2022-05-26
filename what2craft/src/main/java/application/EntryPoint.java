@@ -34,6 +34,7 @@ import albionDataCommunication.PriceResponse;
 import database.ItemService;
 import database.StatService;
 import logic.City;
+import logic.CraftAdvisor;
 import logic.CraftSimulator;
 import logic.ItemBasic;
 import logic.ItemCombined;
@@ -63,6 +64,9 @@ public class EntryPoint {
 	@Autowired
 	DataFetcher dataFetcher;
 	
+	@Autowired
+	CraftAdvisor advisor;
+	
 //	@Bean
 //	public Prices prices() {
 //		return new Prices();
@@ -72,20 +76,21 @@ public class EntryPoint {
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 			
-			statService.setTaxes(400, 450, 400, "lymhurst");
-			City lymhurst = statService.cityByName("lymhurst");
+			ArrayList<ItemCombined> items = new ArrayList<>();
+			items.add(ItemCombined.forBase(itemService.getByName("Black Monk Stave")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
+			items.add(ItemCombined.forBase(itemService.getByName("Rampant Staff")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
+			items.add(ItemCombined.forBase(itemService.getByName("Sacred Scepter")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
+			items.add(ItemCombined.forBase(itemService.getByName("Heron Spear")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
+			items.add(ItemCombined.forBase(itemService.getByName("Stalker Jacket")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
+			items.add(ItemCombined.forBase(itemService.getByName("Wailing Bow")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
+			items.add(ItemCombined.forBase(itemService.getByName("Bridled Fury")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
+			items.add(ItemCombined.forBase(itemService.getByName("Grailseeker")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
+			items.add(ItemCombined.forBase(itemService.getByName("Deathgivers")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
 			
-			simulator.setCity(lymhurst);
-			prices.update(lymhurst, "planks", 5, 0);
-			prices.update(lymhurst, "leather", 5, 0);
-			prices.update(lymhurst, "cloth", 5, 0);
-			prices.update(lymhurst, "ingots", 5, 0);
-			prices.updateJournalsCost(lymhurst, "Hunter", 5);
-			
-			
-			prices.update(lymhurst, itemService.artifactByName("Hardened Debole"), 5);
-			
-			System.out.println(simulator.disenchantedItemCraftCost(itemService.getByName("Bloodletter"), 5));
+			advisor.adviseFromList(items, 5, statService.cityByName("lymhurst"));
+//			
+//			System.out.println(simulator.disenchantedItemCraftCost(itemService.getByName("Bloodletter"), 5));
+//			System.out.println(dataFetcher.fetchActualData(ItemCombined.forBase(itemService.getByName("Bloodletter")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1), lymhurst.name()));
 			
 //			itemService.linkArtsAndItems();
 		

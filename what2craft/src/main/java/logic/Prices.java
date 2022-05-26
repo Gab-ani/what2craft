@@ -55,7 +55,6 @@ public class Prices {
 			} catch (JsonProcessingException | RestClientException e) {
 				e.printStackTrace();
 			}
-			
 		});
 	}
 	
@@ -98,6 +97,10 @@ public class Prices {
 		} catch (JsonProcessingException | RestClientException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public int priceForItem(ItemCombined item, City city) {
+		return prices.get(city.name()).rememberItem(item);
 	}
 
 	public void visualiseItemMemory(String city) {

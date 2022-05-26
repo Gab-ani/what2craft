@@ -32,7 +32,7 @@ public class CraftSimulator {
 		for(int i = 0; i < recipe.length; i += 2) {								// sum up cost of materials
 			craftCost += prices.priceForMaterial(recipe[ i + 1 ], goal.getTier(), 0, city) * Integer.parseInt(recipe[i]);
 		}
-		System.out.println("стоимость ресурсов: " + craftCost);
+//		System.out.println("стоимость ресурсов: " + craftCost);
 		
 		String bonusNodes = "";												
 		for(String node : gameConstants.cityByName(city.name()).getBonusNodes()) {	
@@ -58,8 +58,8 @@ public class CraftSimulator {
 	
 	private int fameCost(ItemCombined goal) {
 		int fameCreated = goal.fameForCrafting();
-		System.out.println("славы: " + fameCreated);
-		System.out.println("денег за славу: " + (int) (fameCreated * prices.priceForFamePoint(goal.craftBranch(), goal.getTier(), city)));
+//		System.out.println("славы: " + fameCreated);
+//		System.out.println("денег за славу: " + (int) (fameCreated * prices.priceForFamePoint(goal.craftBranch(), goal.getTier(), city)));
 		return (int) (fameCreated * prices.priceForFamePoint(goal.craftBranch(), goal.getTier(), city));
 	}
 	

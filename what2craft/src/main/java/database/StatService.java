@@ -10,6 +10,7 @@ import logic.ItemCombined;
 public class StatService {
 	
 	public static final int[] journalsFame = new int[] {0, 900, 1800, 3600, 7200, 14400, 28380, 58590};
+	public static final double sellOrderTax = 0.075;
 	
 	@Autowired
 	CityRepository cityDAO;

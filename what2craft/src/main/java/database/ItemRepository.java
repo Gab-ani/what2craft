@@ -22,6 +22,9 @@ public interface ItemRepository extends JpaRepository<ItemBasic, Integer>{
 	
 	public ArrayList<ItemBasic> findByCraftBranch(String craftBranch);
 	
+	@Query(value = "SELECT * FROM item_basic WHERE contains_artifact = true", nativeQuery = true)
+	public ArrayList<ItemBasic> getArtifactItems();
+	
 	@Transactional 
 	@Modifying
 	@Query(value = "UPDATE item_basic SET recipe = :recipe WHERE human_name = :where", nativeQuery = true)

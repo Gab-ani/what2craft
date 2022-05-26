@@ -35,7 +35,7 @@ public class PriceResponse {
 
 	
 	public boolean isActual() {
-		if(sellPriceMin != 0 && ( LocalDateTime.now().isAfter( parseDate(sellPriceMinDate).minusMinutes(5) ) ) )		// ie we didn't get 0 price from request and it's last update was recent
+		if(sellPriceMin != 0 && ( LocalDateTime.now().isAfter( parseDate(sellPriceMinDate).minusMinutes(40) ) ) )		// ie we didn't get 0 price from request and it's last update was recent
 			return true;
 		return false;
 	}

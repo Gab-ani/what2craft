@@ -37,6 +37,15 @@ public class ItemService {
 		return lines;
 	}
 	
+	public ArrayList<ItemCombined> findArtifactItems(int tier, int enchantmentLevel) {
+		ArrayList<ItemBasic> bases =  itemDAO.getArtifactItems();
+		ArrayList<ItemCombined> artifactItemCombined = new ArrayList<>();
+		bases.forEach(base -> {
+			artifactItemCombined.add( ItemCombined. forBase( base ).forTier( tier ). withEnchantmentLevelOf( enchantmentLevel ). ofQuality(1) );		
+		});
+		return artifactItemCombined;
+	}
+	
 	public ArrayList<ItemCombined> findByTags(ArrayList<String>	tags, int tier, int enchantmentLevel) {
 		ArrayList<ItemCombined> result = new ArrayList<>();
 		
