@@ -41,13 +41,13 @@ public class AuctionHousePunching {				// the class intended only as a testing q
 		setTier(tier);
 		items.forEach(item -> {
 			search(item.getName());
-			delay(1000);
+			delay(2000);
 		});
 		resetFilters();
 		setTier(tier);
 		items.forEach(item -> {
 			search(item.getArtifact().name());
-			delay(1000);
+			delay(2000);
 		});
 	}
 	

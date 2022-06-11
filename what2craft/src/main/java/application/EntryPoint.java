@@ -72,29 +72,18 @@ public class EntryPoint {
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 			
-			ArrayList<ItemBasic> testItems = new ArrayList<>();
-			testItems.add(itemService.getByName("Black Monk Stave"));
-			testItems.add(itemService.getByName("Rampant Staff"));
-			testItems.add(itemService.getByName("Sacred Scepter"));
-			testItems.add(itemService.getByName("Heron Spear"));
-			testItems.add(itemService.getByName("Stalker Jacket"));
-			testItems.add(itemService.getByName("Wailing Bow"));
-			testItems.add(itemService.getByName("Bridled Fury"));
-			testItems.add(itemService.getByName("Grailseeker"));
-			testItems.add(itemService.getByName("Deathgivers"));
+
+			ArrayList<ItemCombined> items = itemService.findArtifactItems(5, 1);
+			
+			ArrayList<ItemBasic> bases = new ArrayList<>();
+			items.forEach(item -> bases.add(item.getBase()));
 			
 			AuctionHousePunching clicker = new AuctionHousePunching();
-			clicker.checkListOf(testItems, 5, 0);
+			clicker.checkListOf(bases, 5, 1);
 			clicker.delay(59000);
 			clicker.delay(59000);
 			
-			ArrayList<ItemCombined> items = new ArrayList<>();
-			testItems.forEach(testBase -> {
-				items.add( ItemCombined.forBase(testBase).forTier(5).withEnchantmentLevelOf(0).ofQuality(1) );
-			});
-			items.add( ItemCombined.forBase(itemService.getByName("Black Monk Stave")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1) );
-			
-			advisor.adviseFromList(items, 5, statService.cityByName("lymhurst"));
+			advisor.adviseFromListUncommon(items, 5, statService.cityByName("lymhurst"));
 //			
 //			System.out.println(simulator.disenchantedItemCraftCost(itemService.getByName("Bloodletter"), 5));
 //			System.out.println(dataFetcher.fetchActualData(ItemCombined.forBase(itemService.getByName("Bloodletter")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1), lymhurst.name()));

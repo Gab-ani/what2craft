@@ -22,6 +22,40 @@ public class CraftSimulator {
 	
 	private City city;
 	
+	public int uncommonItemCraftCost(ItemBasic goalBase, int tier) {
+		
+		ItemCombined goal = ItemCombined.forBase(goalBase).forTier(tier).withEnchantmentLevelOf(1).ofQuality(1);
+		
+		int craftCost = 0;
+		String[] recipe =	goal.getRecipe();
+		
+		for(int i = 0; i < recipe.length; i += 2) {								// sum up cost of materials
+			craftCost += prices.priceForMaterial(recipe[ i + 1 ], goal.getTier(), 1, city) * Integer.parseInt(recipe[i]);
+		}
+//		System.out.println("стоимость ресурсов: " + craftCost);
+		
+		String bonusNodes = "";												
+		for(String node : gameConstants.cityByName(city.name()).getBonusNodes()) {	
+			bonusNodes += node;
+		}
+		if(bonusNodes.contains(goal.craftNode())) {				// see if current city is "good" for this particular crafting recipe			
+			craftCost /= city.bonusReturn();
+		} else {
+			craftCost /= City.defaultReturns();
+		}
+		
+		if(goal.getBase().requiresArtifact()) {										// if item contains artifact - add artifact cost into raw cost
+			craftCost += prices.priceForArtifact(goal.getBase().getArtifact(), city.name(), tier); 
+		}
+		
+		
+		craftCost += craftTaxes(goal);
+		
+		craftCost -= fameCost(goal);
+		
+		return craftCost;		
+	}
+	
 	public int disenchantedItemCraftCost(ItemBasic goalBase, int tier) {
 		
 		ItemCombined goal = ItemCombined.forBase(goalBase).forTier(tier).withEnchantmentLevelOf(0).ofQuality(1);

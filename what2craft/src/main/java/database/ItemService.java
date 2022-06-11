@@ -604,7 +604,7 @@ public class ItemService {
 		
 		ArrayList<ItemBasic> robes = findByTag("Robes");
 		robes.forEach(robe -> {
-			itemDAO.setRecipe(robe.getName(), new String[] {"16", "cloths"});
+			itemDAO.setRecipe(robe.getName(), new String[] {"16", "cloth"});
 		});
 		ArrayList<ItemBasic> armors = findByTag("Armor");
 		armors.forEach(armor -> {
@@ -617,7 +617,7 @@ public class ItemService {
 		
 		ArrayList<ItemBasic> sandals = findByTag("Sandals");
 		sandals.forEach(sandal -> {
-			itemDAO.setRecipe(sandal.getName(), new String[] {"8", "cloths"});
+			itemDAO.setRecipe(sandal.getName(), new String[] {"8", "cloth"});
 		});
 		ArrayList<ItemBasic> boots = findByTag("Boots");
 		boots.forEach(boot -> {
@@ -630,7 +630,7 @@ public class ItemService {
 		
 		ArrayList<ItemBasic> cowls = findByTag("Cowls");
 		cowls.forEach(cowl -> {
-			itemDAO.setRecipe(cowl.getName(), new String[] {"8", "cloths"});
+			itemDAO.setRecipe(cowl.getName(), new String[] {"8", "cloth"});
 		});
 		ArrayList<ItemBasic> helmets = findByTag("Helmets");
 		helmets.forEach(helmet -> {

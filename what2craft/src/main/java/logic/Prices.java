@@ -21,6 +21,8 @@ import database.StatService;
 @Service
 public class Prices {
 	
+	private static final int REDICULOUS_BIG = 999999999;
+	
 	@Autowired
 	private DataFetcher dataFetcher;
 	@Autowired
@@ -82,6 +84,8 @@ public class Prices {
 			PriceResponse response = dataFetcher.fetchActualData(art, tier, city.name());
 			if(response.isActual()) {
 				prices.get(city.name()).setPrice(art, tier, response.getMinSellPrice());
+			} else {
+				prices.get(city.name()).setPrice(art, tier, REDICULOUS_BIG);
 			}
 		} catch (JsonProcessingException | RestClientException e) {
 			e.printStackTrace();
@@ -93,6 +97,8 @@ public class Prices {
 			PriceResponse response = dataFetcher.fetchActualData(material, tier, chant, city.name());
 			if(response.isActual()) {
 				prices.get(city.name()).setPrice(material, tier, chant, response.getMinSellPrice());
+			} else {
+				prices.get(city.name()).setPrice(material, tier, chant, REDICULOUS_BIG);
 			}
 		} catch (JsonProcessingException | RestClientException e) {
 			e.printStackTrace();
@@ -100,7 +106,12 @@ public class Prices {
 	}
 	
 	public int priceForItem(ItemCombined item, City city) {
-		return prices.get(city.name()).rememberItem(item);
+		try {
+			return prices.get(city.name()).rememberItem(item);
+		} catch(NullPointerException e) {
+			System.out.println("Записи для предмета не найдено");
+			return 0;
+		}
 	}
 
 	public void visualiseItemMemory(String city) {
