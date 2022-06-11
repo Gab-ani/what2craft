@@ -29,6 +29,7 @@ import org.springframework.web.client.RestClientException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import albionDataCommunication.AuctionHousePunching;
 import albionDataCommunication.DataFetcher;
 import albionDataCommunication.PriceResponse;
 import database.ItemService;
@@ -67,25 +68,31 @@ public class EntryPoint {
 	@Autowired
 	CraftAdvisor advisor;
 	
-//	@Bean
-//	public Prices prices() {
-//		return new Prices();
-//	}
-	
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 			
+			ArrayList<ItemBasic> testItems = new ArrayList<>();
+			testItems.add(itemService.getByName("Black Monk Stave"));
+			testItems.add(itemService.getByName("Rampant Staff"));
+			testItems.add(itemService.getByName("Sacred Scepter"));
+			testItems.add(itemService.getByName("Heron Spear"));
+			testItems.add(itemService.getByName("Stalker Jacket"));
+			testItems.add(itemService.getByName("Wailing Bow"));
+			testItems.add(itemService.getByName("Bridled Fury"));
+			testItems.add(itemService.getByName("Grailseeker"));
+			testItems.add(itemService.getByName("Deathgivers"));
+			
+			AuctionHousePunching clicker = new AuctionHousePunching();
+			clicker.checkListOf(testItems, 5, 0);
+			clicker.delay(59000);
+			clicker.delay(59000);
+			
 			ArrayList<ItemCombined> items = new ArrayList<>();
-			items.add(ItemCombined.forBase(itemService.getByName("Black Monk Stave")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
-			items.add(ItemCombined.forBase(itemService.getByName("Rampant Staff")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
-			items.add(ItemCombined.forBase(itemService.getByName("Sacred Scepter")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
-			items.add(ItemCombined.forBase(itemService.getByName("Heron Spear")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
-			items.add(ItemCombined.forBase(itemService.getByName("Stalker Jacket")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
-			items.add(ItemCombined.forBase(itemService.getByName("Wailing Bow")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
-			items.add(ItemCombined.forBase(itemService.getByName("Bridled Fury")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
-			items.add(ItemCombined.forBase(itemService.getByName("Grailseeker")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
-			items.add(ItemCombined.forBase(itemService.getByName("Deathgivers")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1));
+			testItems.forEach(testBase -> {
+				items.add( ItemCombined.forBase(testBase).forTier(5).withEnchantmentLevelOf(0).ofQuality(1) );
+			});
+			items.add( ItemCombined.forBase(itemService.getByName("Black Monk Stave")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1) );
 			
 			advisor.adviseFromList(items, 5, statService.cityByName("lymhurst"));
 //			

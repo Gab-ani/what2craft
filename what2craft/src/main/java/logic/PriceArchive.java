@@ -19,16 +19,20 @@ class PriceArchive {
 		materials.put("ingots", new int[8][4]);
 		materials.put("cloth", new int[8][4]);
 		materials.put("leather", new int[8][4]);
+		
 		arts = new HashMap<>();
 		for(Artifact art : artifacts) {
 			arts.put(art.name(), new int[8]);				// index is tier (+1)
 		}
+		
 		grades = new HashMap<>();
 		grades.put("runes", new int[8]);		
 		grades.put("souls", new int[8]);
 		grades.put("relics", new int[8]);
 		grades.put("shards", new int[8]);
+		
 		memory = new HashMap<>();
+		
 		journals = new HashMap<>();
 		journals.put("Hunter empty", new int[8]);
 		journals.put("Hunter full", new int[8]);

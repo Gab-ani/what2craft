@@ -62,6 +62,7 @@ public class CraftAdvisor {
 	}
 	
 	private int checkSingle(ItemCombined item, City city) {
+		System.out.println(item.getBase().getArtifact().name());
 		prices.update(city, itemService.artifactByName(item.getBase().getArtifact().name()), 5);
 		
 		System.out.println("Чекаю " + item.getName());
@@ -70,7 +71,7 @@ public class CraftAdvisor {
 		if(priceToCraft < prices.priceForItem(item, city) * (1 - StatService.sellOrderTax)) {
 			System.out.println("хочу скрафтить " + item.getName());
 		}
-		
+		System.out.println("____________________________________________");
 		return prices.priceForItem(item, city) - priceToCraft;
 	}
 	

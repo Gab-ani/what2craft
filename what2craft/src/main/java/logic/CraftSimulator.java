@@ -59,7 +59,7 @@ public class CraftSimulator {
 	private int fameCost(ItemCombined goal) {
 		int fameCreated = goal.fameForCrafting();
 //		System.out.println("славы: " + fameCreated);
-//		System.out.println("денег за славу: " + (int) (fameCreated * prices.priceForFamePoint(goal.craftBranch(), goal.getTier(), city)));
+		System.out.println("денег за славу: " + (int) (fameCreated * prices.priceForFamePoint(goal.craftBranch(), goal.getTier(), city)));
 		return (int) (fameCreated * prices.priceForFamePoint(goal.craftBranch(), goal.getTier(), city));
 	}
 	
