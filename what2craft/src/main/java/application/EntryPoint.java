@@ -2,6 +2,7 @@ package application;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -73,18 +74,27 @@ public class EntryPoint {
 		return args -> {
 			
 
-			ArrayList<ItemCombined> items = itemService.findArtifactItems(5, 1);
+			ArrayList<ItemCombined> items = itemService.findArtifactItems(5, 0);
+//			ArrayList<String> tags = new ArrayList<>();
+//			tags.add("Bows");
+//			tags.add("Robes");
+//			tags.add("Swords");
+//			ArrayList<ItemCombined> items = itemService.findByTags(tags, 6, 0);
 			
-			ArrayList<ItemBasic> bases = new ArrayList<>();
-			items.forEach(item -> bases.add(item.getBase()));
-			
-			AuctionHousePunching clicker = new AuctionHousePunching();
-			clicker.checkListOf(bases, 5, 1);
-			clicker.delay(59000);
-			clicker.delay(59000);
-			
-			advisor.adviseFromListUncommon(items, 5, statService.cityByName("lymhurst"));
+//			ArrayList<ItemBasic> bases = new ArrayList<>();
+//			items.forEach(item -> bases.add(item.getBase()));
 //			
+//			AuctionHousePunching clicker = new AuctionHousePunching();
+//			clicker.checkListOf(bases, 5, 0);
+//			clicker.delay(59000);
+//			clicker.delay(59000);
+			
+
+			advisor.adviseFromListDisenchanted(items, 5, statService.cityByName("fortsterling"));
+//			advisor.adviseFromListUncommon(items, 5, statService.cityByName("sterling"));
+
+			
+						
 //			System.out.println(simulator.disenchantedItemCraftCost(itemService.getByName("Bloodletter"), 5));
 //			System.out.println(dataFetcher.fetchActualData(ItemCombined.forBase(itemService.getByName("Bloodletter")).forTier(5).withEnchantmentLevelOf(0).ofQuality(1), lymhurst.name()));
 			

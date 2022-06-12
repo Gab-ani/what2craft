@@ -39,7 +39,7 @@ public class Prices {
 		List<Artifact> arts = itemService.getArtifactsList();
 		prices = new HashMap<>();
 		prices.put("lymhurst", new PriceArchive(arts));
-		prices.put("sterling", new PriceArchive(arts));
+		prices.put("fortsterling", new PriceArchive(arts));
 		prices.put("thedford", new PriceArchive(arts));
 		prices.put("martlock", new PriceArchive(arts));
 		prices.put("bridgewatch", new PriceArchive(arts));
@@ -83,7 +83,9 @@ public class Prices {
 		try {
 			PriceResponse response = dataFetcher.fetchActualData(art, tier, city.name());
 			if(response.isActual()) {
+				System.out.println("считанная цена: " + response.getMinSellPrice());
 				prices.get(city.name()).setPrice(art, tier, response.getMinSellPrice());
+				
 			} else {
 				prices.get(city.name()).setPrice(art, tier, REDICULOUS_BIG);
 			}

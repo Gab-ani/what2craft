@@ -23,7 +23,7 @@ public class CraftAdvisor {
 	private Prices prices;
 	
 	public void init(int tier, City city, int chant) {
-		statService.setTaxes(400, 450, 400, "lymhurst");
+		statService.setTaxes(1400, 700, 900, city.name());
 		prices.update(city, "planks", tier, chant);
 		prices.update(city, "leather", tier, chant);
 		prices.update(city, "cloth", tier, chant);
@@ -91,30 +91,40 @@ public class CraftAdvisor {
 	
 	private int checkSingleUncommon(ItemCombined item, City city) {
 		System.out.println("Чекаю " + item.getName());
-		System.out.println(item.getBase().getArtifact().name());
-		prices.update(city, itemService.artifactByName(item.getBase().getArtifact().name()), 5);			// request artifact price from albion db
-		
+		if(item.getBase().requiresArtifact()) {
+			System.out.println(item.getBase().getArtifact().name());
+			prices.update(city, itemService.artifactByName(item.getBase().getArtifact().name()), item.getTier());			// request artifact price from albion db
+		}
+
 		int priceToCraft = craftSimulator.uncommonItemCraftCost(item.getBase(), item.getTier());
 		System.out.println("крафт: " + priceToCraft + " стоимость: " + (int)(prices.priceForItem(item, city) * (1 - StatService.sellOrderTax)));
-		if(priceToCraft < prices.priceForItem(item, city) * (1 - StatService.sellOrderTax)) {
-			System.out.println("хочу скрафтить " + item.getName());
+		
+		int sellPrice = (int) (prices.priceForItem(item, city) * (1 - StatService.sellOrderTax));
+		int profit = sellPrice - priceToCraft;
+		if(profit > 0) {
+			System.out.println("хочу скрафтить " + item.getName() + " выгода: " + profit + " рентабельность: " + ((double)profit /(double)priceToCraft));
 		}
 		System.out.println("____________________________________________");
-		return prices.priceForItem(item, city) - priceToCraft;
+		return profit;
 	}
 	
 	private int checkSingleDisenchanted(ItemCombined item, City city) {
-		System.out.println("Чекаю " + item.getName());
-		System.out.println(item.getBase().getArtifact().name());
-		prices.update(city, itemService.artifactByName(item.getBase().getArtifact().name()), 5);			// request artifact price from albion db
+		System.out.println("Проверяю " + item.getName());
+		if(item.getBase().requiresArtifact()) {
+			System.out.println("Его артефакт - " + item.getBase().getArtifact().name());
+			prices.update(city, itemService.artifactByName(item.getBase().getArtifact().name()), item.getTier());			// request artifact price from albion db			
+		}
 		
-		int priceToCraft = craftSimulator.disenchantedItemCraftCost(item.getBase(), item.getTier());		// count craft price
-		System.out.println("крафт: " + priceToCraft + " стоимость: " + (int)(prices.priceForItem(item, city) * (1 - StatService.sellOrderTax)));
-		if(priceToCraft < prices.priceForItem(item, city) * (1 - StatService.sellOrderTax)) {				// check if craft price < market price & taxes
-			System.out.println("хочу скрафтить " + item.getName());
+		int priceToCraft = craftSimulator.disenchantedItemCraftCost(item.getBase(), item.getTier());
+		System.out.println("крафт: " + priceToCraft + " стоимость: " + prices.priceForItem(item, city));
+		
+		int sellPrice = (int) (prices.priceForItem(item, city) * (1 - StatService.sellOrderTax));
+		int profit = sellPrice - priceToCraft;
+		if(profit > 0) {
+			System.out.println("хочу скрафтить " + item.getName() + " выгода: " + profit + " рентабельность: " + ((double)profit /(double)priceToCraft));
 		}
 		System.out.println("____________________________________________");
-		return prices.priceForItem(item, city) - priceToCraft;												// return profits
+		return profit;						// return profits
 	}
 	
 }

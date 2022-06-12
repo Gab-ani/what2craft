@@ -25,7 +25,7 @@ public class AuctionHousePunching {				// the class intended only as a testing q
 	private static final Point chantMenu = new Point(1064, 270);
 	private static final Point qualityMenu = new Point(1206, 270);
 
-	private static final int menuOptionWidth = 25;
+	private static final int menuOptionWidth = 27;
 	
 	public AuctionHousePunching() {
 		System.setProperty("java.awt.headless", "false");
@@ -46,8 +46,10 @@ public class AuctionHousePunching {				// the class intended only as a testing q
 		resetFilters();
 		setTier(tier);
 		items.forEach(item -> {
-			search(item.getArtifact().name());
-			delay(2000);
+			if(item.requiresArtifact()) {
+				search(item.getArtifact().name());
+				delay(2000);				
+			}
 		});
 	}
 	
