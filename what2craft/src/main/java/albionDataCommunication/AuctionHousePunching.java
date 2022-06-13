@@ -16,7 +16,7 @@ public class AuctionHousePunching {				// the class intended only as a testing q
 												// as this class only job is to autoclick some places, I don't see any reason for it not to be a big static methods pile
 	private Robot rob;
 	
-	private static final Point resetSearch = new Point(722, 270);
+	private static final Point resetSearch = new Point(602, 242);
 	private static final Point resetFilters = new Point(1333, 270);
 	
 	private static final Point search = new Point(600, 270);

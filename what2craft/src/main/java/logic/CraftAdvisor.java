@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +34,45 @@ public class CraftAdvisor {
 		prices.updateJournalsCost(city, "Warrior", tier);
 	}
 	
-	public ArrayList<ItemCombined> adviseFromListUncommon(ArrayList<ItemCombined> pool, int tier, City city) {
+	public ArrayList<RecommendationForm> adviseFromListUncommon(ArrayList<ItemCombined> pool, int tier, City city) {
 		craftSimulator.setCity(city);
-		init(tier, city, 1);
 		prices.memorize(pool, city.name());
 		
+		ArrayList<RecommendationForm> recommendations = new ArrayList<>();
+		
 		pool.forEach(item -> {
-			checkSingleUncommon(item, city);
+			
+			RecommendationForm decision = checkSingleUncommon(item, city);
+			if(decision.isRecommended()) {
+				recommendations.add(decision);
+			}
+			
+			
+			try {									// TODO rework
+				Thread.sleep(1000);					// temporal workaround to pass API calls per minute quota
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			
+		});
+		
+		System.out.println("fin");
+		return recommendations;
+	}
+	
+	public ArrayList<RecommendationForm> adviseFromListDisenchanted(ArrayList<ItemCombined> pool, int tier, City city) {
+		craftSimulator.setCity(city);
+		prices.memorize(pool, city.name());
+		
+		ArrayList<RecommendationForm> recommendations = new ArrayList<>();
+		
+		pool.forEach(item -> {
+			
+			RecommendationForm decision = checkSingleDisenchanted(item, city);
+			if(decision.isRecommended()) {
+				recommendations.add(decision);
+			}
 			
 			try {									// TODO rework
 				Thread.sleep(1000);					// temporal workaround to pass API calls per minute quota
@@ -50,46 +83,26 @@ public class CraftAdvisor {
 		});
 		
 		System.out.println("fin");
-		return pool;
+		return recommendations;
 	}
-	
-	public ArrayList<ItemCombined> adviseFromListDisenchanted(ArrayList<ItemCombined> pool, int tier, City city) {
-		craftSimulator.setCity(city);
-		init(tier, city, 0);
-		prices.memorize(pool, city.name());
+
+	private void sumUpRecommendations(ArrayList<RecommendationForm> recommendations) {
 		
-		pool.forEach(item -> {
-			checkSingleDisenchanted(item, city);
-			
-			try {									// TODO rework
-				Thread.sleep(1000);					// temporal workaround to pass API calls per minute quota
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		HashMap<String, Integer> materialsAmount = new HashMap<>();
+		materialsAmount.put("planks", 0);
+		materialsAmount.put("leather", 0);
+		materialsAmount.put("cloth", 0);
+		materialsAmount.put("ingots", 0);
+		
+		recommendations.forEach(recommendation -> {
 			
 		});
 		
-		System.out.println("fin");
-		return pool;
 	}
 	
-//	public ArrayList<ItemCombined> adviseFromArtifacts(int tier, int enchantmentLevel, City city) {
-//		
-//		craftSimulator.setCity(city);
-//		init(tier, city,);
-//
-//		ArrayList<ItemCombined> possibleCrafts = itemService.findArtifactItems(tier, enchantmentLevel);
-//		prices.memorize(possibleCrafts, city.name());
-//		
-//		possibleCrafts.forEach(item -> {
-//			checkSingleDisenchanted(item, city);			
-//		});
-//		
-//		System.out.println("fin");
-//		return possibleCrafts;
-//	}
-	
-	private int checkSingleUncommon(ItemCombined item, City city) {
+	private RecommendationForm checkSingleUncommon(ItemCombined item, City city) {
+		RecommendationForm decision = new RecommendationForm(item);
+		
 		System.out.println("Чекаю " + item.getName());
 		if(item.getBase().requiresArtifact()) {
 			System.out.println(item.getBase().getArtifact().name());
@@ -102,13 +115,22 @@ public class CraftAdvisor {
 		int sellPrice = (int) (prices.priceForItem(item, city) * (1 - StatService.sellOrderTax));
 		int profit = sellPrice - priceToCraft;
 		if(profit > 0) {
-			System.out.println("хочу скрафтить " + item.getName() + " выгода: " + profit + " рентабельность: " + ((double)profit /(double)priceToCraft));
+			double profitability = ((double)profit /(double)priceToCraft);
+			System.out.println("хочу скрафтить " + item.getName() + " выгода: " + profit + " рентабельность: " + profitability);
+			decision.setStatus(true);
+			decision.setProfitFactors(profit, profitability);
+			decision.setAmountToCraft( ( 50000/profit ) + 1 );
+		} else {
+			decision.setStatus(false);
 		}
 		System.out.println("____________________________________________");
-		return profit;
+		
+		return decision;
 	}
 	
-	private int checkSingleDisenchanted(ItemCombined item, City city) {
+	private RecommendationForm checkSingleDisenchanted(ItemCombined item, City city) {
+		RecommendationForm decision = new RecommendationForm(item);
+		
 		System.out.println("Проверяю " + item.getName());
 		if(item.getBase().requiresArtifact()) {
 			System.out.println("Его артефакт - " + item.getBase().getArtifact().name());
@@ -121,10 +143,16 @@ public class CraftAdvisor {
 		int sellPrice = (int) (prices.priceForItem(item, city) * (1 - StatService.sellOrderTax));
 		int profit = sellPrice - priceToCraft;
 		if(profit > 0) {
-			System.out.println("хочу скрафтить " + item.getName() + " выгода: " + profit + " рентабельность: " + ((double)profit /(double)priceToCraft));
+			double profitability = ((double)profit /(double)priceToCraft);
+			System.out.println("хочу скрафтить " + item.getName() + " выгода: " + profit + " рентабельность: " + profitability);
+			decision.setStatus(true);
+			decision.setProfitFactors(profit, profitability);
+			decision.setAmountToCraft( ( 50000/profit ) + 1 );
+		} else {
+			decision.setStatus(false);
 		}
 		System.out.println("____________________________________________");
-		return profit;						// return profits
+		return decision;						// return profits
 	}
 	
 }
