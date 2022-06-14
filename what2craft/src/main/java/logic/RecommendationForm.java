@@ -11,6 +11,22 @@ public class RecommendationForm {
 	
 	private int recommendedAmount;
 	
+	public int recommendedAmount() {
+		return recommendedAmount;
+	}
+	
+	public double profitability() {
+		return profitability;
+	}
+	
+	public int profit() {
+		return profit;
+	}
+	
+	public ItemCombined item() {
+		return forItem;
+	}
+	
 	public boolean isRecommended() {
 		return isRecommended;
 	}

@@ -44,6 +44,8 @@ public class AuctionHousePunching {				// the class intended only as a testing q
 			delay(2000);
 		});
 		resetFilters();
+		System.out.println("Проверил предметы, жду перед проверкой артефактов");
+		delay(59000);
 		setTier(tier);
 		items.forEach(item -> {
 			if(item.requiresArtifact()) {

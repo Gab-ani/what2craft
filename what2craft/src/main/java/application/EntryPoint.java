@@ -74,7 +74,7 @@ public class EntryPoint {
 		return args -> {
 			
 
-			ArrayList<ItemCombined> items = itemService.findArtifactItems(5, 1);
+			ArrayList<ItemCombined> items = itemService.findArtifactItems(6, 1);
 //			ArrayList<String> tags = new ArrayList<>();
 //			tags.add("Bows");
 //			tags.add("Robes");
@@ -85,12 +85,12 @@ public class EntryPoint {
 			items.forEach(item -> bases.add(item.getBase()));
 			
 			AuctionHousePunching clicker = new AuctionHousePunching();
-			clicker.checkListOf(bases, 5, 1);
+			clicker.checkListOf(bases, 6, 1);
 			clicker.delay(59000);
 			clicker.delay(59000);
 			
-			advisor.init(5, statService.cityByName("fortsterling"), 1);
-			advisor.adviseFromListUncommon(items, 5, statService.cityByName("fortsterling"));
+			advisor.init(6, 1, statService.cityByName("fortsterling"));
+			advisor.adviseFromListUncommon(items, 6, statService.cityByName("fortsterling"));
 //			advisor.adviseFromListUncommon(items, 5, statService.cityByName("sterling"));
 
 			

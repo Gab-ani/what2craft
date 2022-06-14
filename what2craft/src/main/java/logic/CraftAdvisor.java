@@ -23,8 +23,8 @@ public class CraftAdvisor {
 	@Autowired
 	private Prices prices;
 	
-	public void init(int tier, City city, int chant) {
-		statService.setTaxes(1400, 700, 900, city.name());
+	public void init(int tier, int chant, City city) {
+		statService.setTaxes(2350, 2350, 2350, city.name());
 		prices.update(city, "planks", tier, chant);
 		prices.update(city, "leather", tier, chant);
 		prices.update(city, "cloth", tier, chant);
@@ -58,6 +58,7 @@ public class CraftAdvisor {
 		});
 		
 		System.out.println("fin");
+		sumUpRecommendations(recommendations);
 		return recommendations;
 	}
 	
@@ -83,6 +84,7 @@ public class CraftAdvisor {
 		});
 		
 		System.out.println("fin");
+		sumUpRecommendations(recommendations);
 		return recommendations;
 	}
 
@@ -95,8 +97,32 @@ public class CraftAdvisor {
 		materialsAmount.put("ingots", 0);
 		
 		recommendations.forEach(recommendation -> {
+			System.out.println("__________________________");
+			String[] recipe = recommendation.item().getRecipe();
+			
+			// recipe always has even number of strings and structured like { |amount| , |name|, |amount|, |name|... }
+			// for example { "20", "planks", "12", "cloth" }	
+			// so this cycle adds all materials coded in recipe multiplied by amount of items to craft to materialsAmount map to visualize later.
+			for(int i = 0; i < recipe.length; i +=2) {																															
+				materialsAmount.put (  recipe[i + 1],    materialsAmount.get(recipe[i + 1]) + Integer.parseInt(recipe[i]) * recommendation.recommendedAmount()  );	
+			}
+
+			if(recommendation.item().containsArtifact()) {
+				System.out.println(recommendation.item().getBase().getArtifact().name());
+			}
+			System.out.println(recommendation.item().getName());
+			System.out.println("прибыль: " + recommendation.profit() + ", рентабельность: " + recommendation.profitability());
+			System.out.println(recommendation.recommendedAmount() + " предметов");
 			
 		});
+		
+		System.out.println("__________________________");
+		
+		
+		System.out.println(materialsAmount.get("planks") + " planks");
+		System.out.println(materialsAmount.get("leather") + " leather");
+		System.out.println(materialsAmount.get("cloth") + " cloth");
+		System.out.println(materialsAmount.get("ingots") + " ingots");
 		
 	}
 	
@@ -114,8 +140,8 @@ public class CraftAdvisor {
 		
 		int sellPrice = (int) (prices.priceForItem(item, city) * (1 - StatService.sellOrderTax));
 		int profit = sellPrice - priceToCraft;
-		if(profit > 0) {
-			double profitability = ((double)profit /(double)priceToCraft);
+		double profitability = ((double)profit /(double)priceToCraft);
+		if(profit > 0 && profitability > 0.15) {
 			System.out.println("хочу скрафтить " + item.getName() + " выгода: " + profit + " рентабельность: " + profitability);
 			decision.setStatus(true);
 			decision.setProfitFactors(profit, profitability);
@@ -142,8 +168,8 @@ public class CraftAdvisor {
 		
 		int sellPrice = (int) (prices.priceForItem(item, city) * (1 - StatService.sellOrderTax));
 		int profit = sellPrice - priceToCraft;
-		if(profit > 0) {
-			double profitability = ((double)profit /(double)priceToCraft);
+		double profitability = ((double)profit /(double)priceToCraft);
+		if(profit > 0 && profitability > 0.15) {
 			System.out.println("хочу скрафтить " + item.getName() + " выгода: " + profit + " рентабельность: " + profitability);
 			decision.setStatus(true);
 			decision.setProfitFactors(profit, profitability);

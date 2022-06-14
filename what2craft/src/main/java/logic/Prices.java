@@ -40,7 +40,7 @@ public class Prices {
 		prices = new HashMap<>();
 		prices.put("lymhurst", new PriceArchive(arts));
 		prices.put("fortsterling", new PriceArchive(arts));
-		prices.put("thedford", new PriceArchive(arts));
+		prices.put("thetford", new PriceArchive(arts));
 		prices.put("martlock", new PriceArchive(arts));
 		prices.put("bridgewatch", new PriceArchive(arts));
 		prices.put("caerleon", new PriceArchive(arts));
