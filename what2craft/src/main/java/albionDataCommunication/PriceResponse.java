@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import logic.ItemBasic;
 
-public class PriceResponse {
+public class PriceResponse implements Comparable<PriceResponse>{
 
 	@JsonProperty("item_id")
 	private String itemId;
@@ -105,5 +105,14 @@ public class PriceResponse {
 
 	public void setBuyPriceMaxDate(String buyPriceMaxDate) {
 		this.buyPriceMaxDate = buyPriceMaxDate;
+	}
+
+	@Override
+	public int compareTo(PriceResponse o) {
+		if(this.sellPriceMin < o.sellPriceMin)
+			return -1;
+		if(this.sellPriceMin > o.sellPriceMin)
+			return 1;
+		return 0;
 	}
 }

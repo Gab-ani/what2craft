@@ -1,5 +1,7 @@
 package albionDataCommunication;
 
+import java.util.Arrays;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -21,7 +23,7 @@ public class DataFetcher {
 		if(item.getChant() != 0)
 			url += "@" + item.getChant();
 		url += ".json?locations=" + city;
-		url += "&qualities=" + item.getQuality();
+		url += "&qualities=0";
 		return url;
 	}
 	
@@ -78,6 +80,8 @@ public class DataFetcher {
 		
 		ResponseEntity<PriceResponse[]> response = restTemplate.getForEntity(buildURL(material, tier, chant, city), PriceResponse[].class);
 		PriceResponse[] prices = response.getBody();
+		
+		Arrays.sort(prices);
 		
 		return prices[0];
 	}
