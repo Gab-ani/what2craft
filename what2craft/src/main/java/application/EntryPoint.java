@@ -37,6 +37,7 @@ import database.ItemService;
 import database.StatService;
 import logic.City;
 import logic.CraftAdvisor;
+import logic.CraftAdvisorData;
 import logic.CraftSimulator;
 import logic.ItemBasic;
 import logic.ItemCombined;
@@ -89,10 +90,23 @@ public class EntryPoint {
 			clicker.delay(59000);
 			clicker.delay(59000);
 			
-			advisor.init(6, 1, statService.cityByName("fortsterling"));
-			advisor.adviseFromListUncommon(items, 6, statService.cityByName("fortsterling"));
-//			advisor.adviseFromListUncommon(items, 5, statService.cityByName("sterling"));
-
+			ArrayList<String> blacklist = new ArrayList<>();
+			blacklist.add("Deathg");
+			blacklist.add("Bedrock");
+			blacklist.add("Kingmaker");
+			blacklist.add("Damnation");
+			blacklist.add("Cursed Sk");
+			blacklist.add("Mistc");
+			blacklist.add("Aegis");
+			blacklist.add("Galat");
+			blacklist.add("Shaper");
+						
+			advisor.init(6, 1, statService.cityByName("thetford"));
+			CraftAdvisorData setup = CraftAdvisorData.assembleCraftData().lookUp(items).inCity(statService.cityByName("thetford")).except(null);
+			advisor.adviseFromListUncommon(setup);
+//			advisor.adviseFromListUncommon(items, statService.cityByName("sterling"));
+//			Disenchanted
+//			Uncommon
 			
 						
 //			System.out.println(simulator.disenchantedItemCraftCost(itemService.getByName("Bloodletter"), 5));

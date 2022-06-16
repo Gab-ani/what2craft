@@ -34,15 +34,15 @@ public class CraftAdvisor {
 		prices.updateJournalsCost(city, "Warrior", tier);
 	}
 	
-	public ArrayList<RecommendationForm> adviseFromListUncommon(ArrayList<ItemCombined> pool, int tier, City city) {
-		craftSimulator.setCity(city);
-		prices.memorize(pool, city.name());
+	public ArrayList<RecommendationForm> adviseFromListUncommon(CraftAdvisorData setup) {
+		craftSimulator.setCity(setup.city());
+		prices.memorize(setup.items(), setup.city().name());
 		
 		ArrayList<RecommendationForm> recommendations = new ArrayList<>();
 		
-		pool.forEach(item -> {
+		setup.items().forEach(item -> {
 			
-			RecommendationForm decision = checkSingleUncommon(item, city);
+			RecommendationForm decision = checkSingleUncommon(item, setup.city());
 			if(decision.isRecommended()) {
 				recommendations.add(decision);
 			}
@@ -58,19 +58,20 @@ public class CraftAdvisor {
 		});
 		
 		System.out.println("fin");
-		sumUpRecommendations(recommendations);
+		sumUpRecommendations(recommendations, setup.blacklist());
 		return recommendations;
 	}
 	
-	public ArrayList<RecommendationForm> adviseFromListDisenchanted(ArrayList<ItemCombined> pool, int tier, City city) {
-		craftSimulator.setCity(city);
-		prices.memorize(pool, city.name());
+//	public ArrayList<RecommendationForm> adviseFromListDisenchanted(ArrayList<ItemCombined> pool, City city) {
+	public ArrayList<RecommendationForm> adviseFromListDisenchanted(CraftAdvisorData setup) {
+		craftSimulator.setCity(setup.city());
+		prices.memorize(setup.items(), setup.city().name());
 		
 		ArrayList<RecommendationForm> recommendations = new ArrayList<>();
 		
-		pool.forEach(item -> {
+		setup.items().forEach(item -> {
 			
-			RecommendationForm decision = checkSingleDisenchanted(item, city);
+			RecommendationForm decision = checkSingleDisenchanted(item, setup.city());
 			if(decision.isRecommended()) {
 				recommendations.add(decision);
 			}
@@ -84,11 +85,11 @@ public class CraftAdvisor {
 		});
 		
 		System.out.println("fin");
-		sumUpRecommendations(recommendations);
+		sumUpRecommendations(recommendations, setup.blacklist());
 		return recommendations;
 	}
 
-	private void sumUpRecommendations(ArrayList<RecommendationForm> recommendations) {
+	private void sumUpRecommendations(ArrayList<RecommendationForm> recommendations, ArrayList<String> blacklist) {
 		
 		HashMap<String, Integer> materialsAmount = new HashMap<>();
 		materialsAmount.put("planks", 0);
@@ -96,7 +97,10 @@ public class CraftAdvisor {
 		materialsAmount.put("cloth", 0);
 		materialsAmount.put("ingots", 0);
 		
+		clear(recommendations, blacklist);
+		
 		recommendations.forEach(recommendation -> {
+			
 			System.out.println("__________________________");
 			String[] recipe = recommendation.item().getRecipe();
 			
@@ -126,6 +130,16 @@ public class CraftAdvisor {
 		
 	}
 	
+	private void clear(ArrayList<RecommendationForm> recommendations, ArrayList<String> blacklist) {
+		for(RecommendationForm recommendation : recommendations) {
+			blacklist.forEach(substring -> {
+				if(recommendation.item().getName().contains(substring)) {
+					recommendations.remove(recommendation);
+				}
+			});
+		}
+	}
+
 	private RecommendationForm checkSingleUncommon(ItemCombined item, City city) {
 		RecommendationForm decision = new RecommendationForm(item);
 		
