@@ -2,6 +2,7 @@ package logic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +98,8 @@ public class CraftAdvisor {
 		materialsAmount.put("cloth", 0);
 		materialsAmount.put("ingots", 0);
 		
-		clear(recommendations, blacklist);
+		if(blacklist != null)
+			clear(recommendations, blacklist);
 		
 		recommendations.forEach(recommendation -> {
 			
@@ -131,13 +133,26 @@ public class CraftAdvisor {
 	}
 	
 	private void clear(ArrayList<RecommendationForm> recommendations, ArrayList<String> blacklist) {
-		for(RecommendationForm recommendation : recommendations) {
-			blacklist.forEach(substring -> {
+		
+		Iterator<RecommendationForm> iterator = recommendations.iterator();
+		while(iterator.hasNext()) {
+			RecommendationForm recommendation = iterator.next();
+			for(String substring : blacklist) {
 				if(recommendation.item().getName().contains(substring)) {
-					recommendations.remove(recommendation);
+					System.out.println(recommendation.item().getName() + " содержит " + substring);
+					iterator.remove();
 				}
-			});
+			}
 		}
+		
+//		for(RecommendationForm recommendation : recommendations) {
+//			for(String substring : blacklist) {
+//				if(recommendation.item().getName().contains(substring)) {
+//					System.out.println(recommendation.item().getName() + " содержит " + substring);
+//					recommendations.remove(recommendation);
+//				}
+//			}
+//		}
 	}
 
 	private RecommendationForm checkSingleUncommon(ItemCombined item, City city) {
@@ -188,6 +203,9 @@ public class CraftAdvisor {
 			decision.setStatus(true);
 			decision.setProfitFactors(profit, profitability);
 			decision.setAmountToCraft( ( 50000/profit ) + 1 );
+			if(decision.recommendedAmount() > 10) {
+				decision.setAmountToCraft(10);
+			}
 		} else {
 			decision.setStatus(false);
 		}
