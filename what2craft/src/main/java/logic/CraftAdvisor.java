@@ -24,8 +24,9 @@ public class CraftAdvisor {
 	@Autowired
 	private Prices prices;
 	
-	public void init(int tier, int chant, City city) {
-		statService.setTaxes(2350, 2350, 2350, city.name());
+	private City city;
+	
+	public void init(int tier, int chant) {
 		prices.update(city, "planks", tier, chant);
 		prices.update(city, "leather", tier, chant);
 		prices.update(city, "cloth", tier, chant);
@@ -35,19 +36,46 @@ public class CraftAdvisor {
 		prices.updateJournalsCost(city, "Warrior", tier);
 	}
 	
-	public ArrayList<RecommendationForm> adviseFromListUncommon(CraftAdvisorData setup) {
+	public void setCity(String cityName) {
+		city = statService.cityByName(cityName);
+	}
+	
+	public void setTaxes(int mage, int hunter, int warrior) {
+		setMageTax(mage);
+		setHunterTax(hunter);
+		setWarriorTax(warrior);
+	}
+	
+	public void setMageTax(int tax) {
+		statService.setMageTax(city.name(), tax);
+	}
+	
+	public void setHunterTax(int tax) {
+		statService.setHunterTax(city.name(), tax);
+	}
+	
+	public void setWarriorTax(int tax) {
+		statService.setWarriorTax(city.name(), tax);
+	}
+	
+	public ArrayList<RecommendationForm> adviseFromList(CraftAdvisorData setup) {
 		craftSimulator.setCity(setup.city());
 		prices.memorize(setup.items(), setup.city().name());
 		
 		ArrayList<RecommendationForm> recommendations = new ArrayList<>();
 		
 		setup.items().forEach(item -> {
+			RecommendationForm decision;
 			
-			RecommendationForm decision = checkSingleUncommon(item, setup.city());
+			if(item.getChant() == 0) {
+				decision = checkSingleDisenchanted(item, setup.city());				
+			} else {														// TODO 1, 2 and 3 chant else-ifs
+				decision = checkSingleUncommon(item, setup.city());				
+			}
+			
 			if(decision.isRecommended()) {
 				recommendations.add(decision);
 			}
-			
 			
 			try {									// TODO rework
 				Thread.sleep(1000);					// temporal workaround to pass API calls per minute quota
@@ -55,106 +83,12 @@ public class CraftAdvisor {
 				e.printStackTrace();
 			}
 			
-			
 		});
 		
-		System.out.println("fin");
-		sumUpRecommendations(recommendations, setup.blacklist());
+//		sumUpRecommendations(recommendations, setup.blacklist());
 		return recommendations;
 	}
 	
-//	public ArrayList<RecommendationForm> adviseFromListDisenchanted(ArrayList<ItemCombined> pool, City city) {
-	public ArrayList<RecommendationForm> adviseFromListDisenchanted(CraftAdvisorData setup) {
-		craftSimulator.setCity(setup.city());
-		prices.memorize(setup.items(), setup.city().name());
-		
-		ArrayList<RecommendationForm> recommendations = new ArrayList<>();
-		
-		setup.items().forEach(item -> {
-			
-			RecommendationForm decision = checkSingleDisenchanted(item, setup.city());
-			if(decision.isRecommended()) {
-				recommendations.add(decision);
-			}
-			
-			try {									// TODO rework
-				Thread.sleep(1000);					// temporal workaround to pass API calls per minute quota
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-		});
-		
-		System.out.println("fin");
-		sumUpRecommendations(recommendations, setup.blacklist());
-		return recommendations;
-	}
-
-	private void sumUpRecommendations(ArrayList<RecommendationForm> recommendations, ArrayList<String> blacklist) {
-		
-		HashMap<String, Integer> materialsAmount = new HashMap<>();
-		materialsAmount.put("planks", 0);
-		materialsAmount.put("leather", 0);
-		materialsAmount.put("cloth", 0);
-		materialsAmount.put("ingots", 0);
-		
-		if(blacklist != null)
-			clear(recommendations, blacklist);
-		
-		recommendations.forEach(recommendation -> {
-			
-			System.out.println("__________________________");
-			String[] recipe = recommendation.item().getRecipe();
-			
-			// recipe always has even number of strings and structured like { |amount| , |name|, |amount|, |name|... }
-			// for example { "20", "planks", "12", "cloth" }	
-			// so this cycle adds all materials coded in recipe multiplied by amount of items to craft to materialsAmount map to visualize later.
-			for(int i = 0; i < recipe.length; i +=2) {																															
-				materialsAmount.put (  recipe[i + 1],    materialsAmount.get(recipe[i + 1]) + Integer.parseInt(recipe[i]) * recommendation.recommendedAmount()  );	
-			}
-
-			if(recommendation.item().containsArtifact()) {
-				System.out.println(recommendation.item().getBase().getArtifact().name());
-			}
-			System.out.println(recommendation.item().getName());
-			System.out.println("прибыль: " + recommendation.profit() + ", рентабельность: " + recommendation.profitability());
-			System.out.println(recommendation.recommendedAmount() + " предметов");
-			
-		});
-		
-		System.out.println("__________________________");
-		
-		
-		System.out.println(materialsAmount.get("planks") + " planks");
-		System.out.println(materialsAmount.get("leather") + " leather");
-		System.out.println(materialsAmount.get("cloth") + " cloth");
-		System.out.println(materialsAmount.get("ingots") + " ingots");
-		
-	}
-	
-	private void clear(ArrayList<RecommendationForm> recommendations, ArrayList<String> blacklist) {
-		
-		Iterator<RecommendationForm> iterator = recommendations.iterator();
-		while(iterator.hasNext()) {
-			RecommendationForm recommendation = iterator.next();
-			for(String substring : blacklist) {
-				if(recommendation.item().getName().contains(substring)) {
-					System.out.println(recommendation.item().getName() + " содержит " + substring);
-					iterator.remove();
-				}
-			}
-		}
-		
-//		for(RecommendationForm recommendation : recommendations) {
-//			for(String substring : blacklist) {
-//				if(recommendation.item().getName().contains(substring)) {
-//					System.out.println(recommendation.item().getName() + " содержит " + substring);
-//					recommendations.remove(recommendation);
-//				}
-//			}
-//		}
-	}
-
 	private RecommendationForm checkSingleUncommon(ItemCombined item, City city) {
 		RecommendationForm decision = new RecommendationForm(item);
 		

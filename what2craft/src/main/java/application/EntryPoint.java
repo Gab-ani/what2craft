@@ -75,30 +75,35 @@ public class EntryPoint {
 		return args -> {
 			
 
-			ArrayList<ItemCombined> items = itemService.findArtifactItems(5, 0);
+			ArrayList<ItemCombined> items = itemService.findArtifactItems(6, 1);
 			
 			ArrayList<ItemBasic> bases = new ArrayList<>();
 			items.forEach(item -> bases.add(item.getBase()));
 			
 			AuctionHousePunching clicker = new AuctionHousePunching();
-			clicker.checkListOf(bases, 5, 0);
+			clicker.checkListOf(bases, 6, 1);
 			clicker.delay(59000);
 			clicker.delay(59000);
 			
 			ArrayList<String> blacklist = new ArrayList<>();
-			blacklist.add("Ironr");
-			blacklist.add("Hoarf");
-			blacklist.add("Tapr");
-			blacklist.add("Occult S");
-			blacklist.add("Mistca");
-			blacklist.add("Judicator B");
-//			blacklist.add("Demon H");
-//			blacklist.add("Boots of Val");
-//			blacklist.add("Shaper");
+			blacklist.add("Blight S");
+			blacklist.add("Eye of S");
+			blacklist.add("Astral A");
+//			blacklist.add("Jacket of T");
+//			blacklist.add("Helmet of V");
+//			blacklist.add("Sacred S");
+//			blacklist.add("Censer");
+//			blacklist.add("Tapr");
+//			blacklist.add("Druidic");
+//			blacklist.add("Chillho");
+//			blacklist.add("Ravenstr");
+//			blacklist.add("Trinity S");
+//			blacklist.add("Druidic");
 						
-			advisor.init(5, 0, statService.cityByName("lymhurst"));
-			CraftAdvisorData setup = CraftAdvisorData. assembleCraftData(). lookUp(items). inCity(statService. cityByName("lymhurst")). except(blacklist);
-			advisor.adviseFromListDisenchanted(setup);
+			advisor.init(6, 1);
+			advisor.setTaxes(2350, 2350, 2350);
+			CraftAdvisorData setup = CraftAdvisorData. assembleCraftData(). lookUp(items). inCity(statService.cityByName("thetford")). except(blacklist);
+			advisor.adviseFromListUncommon(setup);
 //			advisor.adviseFromListUncommon(items, statService.cityByName("sterling"));
 //			Disenchanted
 //			Uncommon
