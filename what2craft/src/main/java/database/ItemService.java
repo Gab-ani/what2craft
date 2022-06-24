@@ -46,7 +46,16 @@ public class ItemService {
 		return artifactItemCombined;
 	}
 	
-	public ArrayList<ItemCombined> findByTags(ArrayList<String>	tags, int tier, int enchantmentLevel) {
+	public ArrayList<ItemBasic> basesByTags(ArrayList<String> tags) {
+		ArrayList<ItemBasic> bases = new ArrayList<>();
+		for(String tag : tags) {
+			bases.addAll(findByTag(tag));
+		}
+		
+		return bases;
+	}
+	
+	public ArrayList<ItemCombined> itemsByTags(ArrayList<String> tags, int tier, int enchantmentLevel) {
 		ArrayList<ItemCombined> result = new ArrayList<>();
 		
 		ArrayList<ItemBasic> bases = new ArrayList<>();

@@ -1,6 +1,7 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -9,6 +10,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
+import database.ItemService;
 import database.StatService;
 import logic.CraftAdvisor;
 import logic.CraftAdvisorData;
@@ -21,25 +23,34 @@ public class CLInterface {
 	StatService statServise;
 	@Autowired
 	CraftAdvisor craftAdvisor;
+	@Autowired
+	ItemService itemService;
 	
 	CraftAdvisorData setup;
 	
+	@ShellMethod(key = {"start"}, value = "make a craft advise")
+	public void adviseFromTags() {
+		setup = CraftAdvisorData.assembleCraftData();
+//		System.out.println("Follow the instructions to find great craft paths:");
+//		System.out.println("First type the name of a city");
+//		System.out.println("Then type \"-prepare\" and select tier and enchantmentlevel; for example \"prepare 5.1\"");
+	}
+	
 	@ShellMethod(key = {"craft", "what2craft", "w2c"}, value = "make a craft advise")
 	public void adviseFromTags(@ShellOption(value = "tags", arity = 5) String[] tags) {
-		
-		
-		
+		sumUpRecommendations(craftAdvisor.adviseFromList(setup), setup.blacklist());
+	}
+	
+	@ShellMethod(key = {"items", "setitems"}, value = "select item categories to lookup; use -tags to see all available tags")
+	public void setItems(@ShellOption(value = "tier") String tierCoded, @ShellOption(value = "items") String[] tags) {
+		int[] tierDecoded = decodeTier(tierCoded);
+		craftAdvisor.init(tierDecoded[0], tierDecoded[1]);
+		setup = setup.lookUp(itemService.itemsByTags(new ArrayList<>( Arrays.asList(tags) ), tierDecoded[0], tierDecoded[1]));
 	}
 	
 	@ShellMethod(key = {"scity", "sc", "setcity"}, value = "set city to lookup")
 	public void setCity(@ShellOption(value = "city") String cityName) {
 		setup = setup.inCity(statServise.cityByName(cityName));
-	}
-	
-	@ShellMethod(key = {"prepare", "prep", "tier"}, value = "lookup tier and enchantment level for materials and journals")
-	public void prepareTier(@ShellOption(value = "tier") String tier) {
-		int[] tierDecoded = decodeTier(tier);
-		craftAdvisor.init(tierDecoded[0], tierDecoded[1]);
 	}
 	
 	@ShellMethod(key = {"settax", "taxes"}, value = "set all taxes as one number")
@@ -62,7 +73,7 @@ public class CLInterface {
 		craftAdvisor.setWarriorTax(tax);
 	}
 	
-private void sumUpRecommendations(ArrayList<RecommendationForm> recommendations, ArrayList<String> blacklist) {
+	private void sumUpRecommendations(ArrayList<RecommendationForm> recommendations, ArrayList<String> blacklist) {
 		
 		HashMap<String, Integer> materialsAmount = new HashMap<>();
 		materialsAmount.put("planks", 0);
@@ -96,7 +107,6 @@ private void sumUpRecommendations(ArrayList<RecommendationForm> recommendations,
 		
 		System.out.println("__________________________");
 		
-		
 		System.out.println(materialsAmount.get("planks") + " planks");
 		System.out.println(materialsAmount.get("leather") + " leather");
 		System.out.println(materialsAmount.get("cloth") + " cloth");
@@ -105,7 +115,6 @@ private void sumUpRecommendations(ArrayList<RecommendationForm> recommendations,
 	}
 
 	private void clear(ArrayList<RecommendationForm> recommendations, ArrayList<String> blacklist) {
-		
 		Iterator<RecommendationForm> iterator = recommendations.iterator();
 		while(iterator.hasNext()) {
 			RecommendationForm recommendation = iterator.next();
